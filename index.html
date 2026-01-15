@@ -18,6 +18,8 @@
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.03); 
             --ios-bezier: cubic-bezier(0.25, 0.1, 0.25, 1);
             --accent-black: #1a1a1a;
+            --error-color: #ff3b30;
+            --success-color: #34c759;
         }
 
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; outline: none; }
@@ -38,6 +40,29 @@
         h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.5px; }
         p { margin: 0; color: var(--secondary-text); }
         a { text-decoration: none; -webkit-tap-highlight-color: transparent; }
+
+        /* --- NOTIFICATIONS (NEW) --- */
+        #notification-area {
+            position: fixed; top: 20px; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            z-index: 3000; pointer-events: none;
+        }
+        .notification-toast {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex; align-items: center; gap: 10px;
+            transform: translateY(-50px); opacity: 0;
+            transition: all 0.4s var(--ios-bezier);
+            font-size: 13px; font-weight: 600; color: #000;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .notification-toast.visible { transform: translateY(0); opacity: 1; }
+        .notification-toast i { font-size: 16px; }
+        .notification-toast.success i { color: var(--success-color); }
+        .notification-toast.error i { color: var(--error-color); }
 
         /* --- UI ELEMENTS --- */
         #preloader {
@@ -114,7 +139,7 @@
         .total-block.hidden { opacity: 0; transform: translateY(20px); max-height: 0; margin: 0; padding: 0; }
         .checkout-btn { background: #000; color: white; width: 100%; padding: 16px; border-radius: 16px; font-size: 16px; font-weight: 600; margin-top: 15px; border: none; cursor: pointer; }
 
-        /* --- AUTH & PROFILE (NEW) --- */
+        /* --- AUTH & PROFILE --- */
         .profile-header-container {
             background: var(--glass-bg); border-radius: 24px; padding: 30px 20px; text-align: center;
             border: 1px solid var(--glass-border); margin-bottom: 25px; box-shadow: var(--shadow);
@@ -153,13 +178,28 @@
             background: #f9f9f9; font-size: 15px; transition: border 0.2s; -webkit-appearance: none;
         }
         .form-input:focus { border-color: #1a1a1a; background: #fff; }
+        
+        /* FIX: Checkbox Logic */
         .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; cursor: pointer; }
         .checkbox-custom {
             width: 20px; height: 20px; border-radius: 6px; border: 1px solid #ccc; display: flex;
             align-items: center; justify-content: center; background: white; transition: all 0.2s;
         }
+        .checkbox-custom i { opacity: 0; transform: scale(0.5); transition: all 0.2s; color: white; }
         .checkbox-input { display: none; }
-        .checkbox-input:checked + .checkbox-custom { background: #1a1a1a; border-color: #1a1a1a; color: white; }
+        .checkbox-input:checked + .checkbox-custom { background: #1a1a1a; border-color: #1a1a1a; }
+        .checkbox-input:checked + .checkbox-custom i { opacity: 1; transform: scale(1); }
+
+        /* FIX: Color Buttons */
+        .color-option-btn {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; background: var(--glass-bg); padding: 14px 16px; margin-bottom: 8px;
+            border-radius: 16px; text-align: left; font-weight: 600; font-size: 14px;
+            border: 1px solid var(--glass-border); cursor: pointer; box-shadow: var(--shadow);
+            color: #1a1a1a; transition: transform 0.1s;
+        }
+        .color-option-btn:active { transform: scale(0.98); }
+        .color-option-btn i { color: #ccc; font-size: 12px; }
 
         /* --- MODALS --- */
         .modal-overlay {
@@ -222,6 +262,8 @@
         <div class="spinner"></div>
         <p class="loading-text">Загрузка...</p>
     </div>
+
+    <div id="notification-area"></div>
 
     <div id="app-content">
         <div id="home" class="page active">
@@ -467,7 +509,7 @@
                 <input type="password" class="form-input" id="new-pass">
             </div>
             <div style="text-align: left; margin-bottom: 10px;">
-                <a href="#" onclick="alert('Мы отправили новый пароль в бот!'); closeModal('change-pass-modal');" style="font-size: 12px; color: #0077FF;">Забыли старый пароль?</a>
+                <a href="#" onclick="showNotification('Мы отправили новый пароль в бот!', 'success'); closeModal('change-pass-modal');" style="font-size: 12px; color: #0077FF;">Забыли старый пароль?</a>
             </div>
             <button class="modal-btn" onclick="submitPassChange()">Сохранить</button>
             <span class="close-modal" onclick="closeModal('change-pass-modal')">Отмена</span>
@@ -547,14 +589,46 @@
         tg.setHeaderColor('secondary_bg_color'); 
         tg.setBackgroundColor('secondary_bg_color');
 
+        // --- NOTIFICATIONS SYSTEM ---
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-area');
+            const toast = document.createElement('div');
+            toast.className = `notification-toast ${type}`;
+            
+            let icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            
+            toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+
+            // Animate in
+            requestAnimationFrame(() => { toast.classList.add('visible'); });
+
+            // Remove after delay
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => { toast.remove(); }, 400);
+            }, 3000);
+
+            if(tg.HapticFeedback) {
+                if(type === 'error') tg.HapticFeedback.notificationOccurred('error');
+                else tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+
         // --- AUTH STATE & LOGIC ---
-        // !IMPORTANT: In a real app, use a secure token, not just localStorage
+        // !IMPORTANT: This logic works LOCAL ONLY. For real DB connection, we need Python backend.
         let currentUser = null; 
 
         function checkAuth() {
-            const storedUser = localStorage.getItem('furuyume_user');
-            if (storedUser) {
-                currentUser = JSON.parse(storedUser);
+            // Check if there is a remembered user
+            const rememberedLogin = localStorage.getItem('furuyume_remembered');
+            if (rememberedLogin) {
+                // If remembered, try to find the full user data
+                const userData = localStorage.getItem('furuyume_user_' + rememberedLogin);
+                if (userData) {
+                    currentUser = JSON.parse(userData);
+                }
             }
             renderProfile();
         }
@@ -590,35 +664,54 @@
             }
         }
 
+        let tempRegData = {};
+
         function regNextStep() {
             const login = document.getElementById('reg-login').value;
             const pass = document.getElementById('reg-pass').value;
             const passRep = document.getElementById('reg-pass-repeat').value;
 
-            if(!login || login.length > 12) return alert('Логин обязателен (до 12 символов)');
-            if(!pass || pass !== passRep) return alert('Пароли не совпадают');
+            if(!login || login.length > 12) return showNotification('Логин слишком длинный (макс 12)', 'error');
+            if(!login || login.length < 3) return showNotification('Логин слишком короткий', 'error');
+            if(!pass) return showNotification('Введите пароль', 'error');
+            if(pass !== passRep) return showNotification('Пароли не совпадают', 'error');
             
-            // Simulation of server request
+            // Check if user already exists in LocalStorage
+            if(localStorage.getItem('furuyume_user_' + login)) {
+                return showNotification('Такой логин уже занят', 'error');
+            }
+
+            tempRegData = { login, pass };
+
             document.getElementById('reg-step-1').style.display = 'none';
             document.getElementById('reg-step-2').style.display = 'block';
-            alert('СИМУЛЯЦИЯ: Код подтверждения отправлен в бот (введите 0000)');
+            showNotification('Код отправлен в бот (тест: 0000)', 'success');
         }
 
         function finishRegistration() {
             const code = document.getElementById('reg-code').value;
-            if(code !== '0000') return alert('Неверный код (для теста введите 0000)');
+            if(code !== '0000') return showNotification('Неверный код (введите 0000)', 'error');
 
-            const login = document.getElementById('reg-login').value;
-            // Create user object
-            currentUser = { login: login, fc: 0 };
-            localStorage.setItem('furuyume_user', JSON.stringify(currentUser));
+            const newUser = { login: tempRegData.login, pass: tempRegData.pass, fc: 0 };
+            
+            // Save specific user data
+            localStorage.setItem('furuyume_user_' + newUser.login, JSON.stringify(newUser));
+            
+            // Auto login
+            currentUser = newUser;
+            localStorage.setItem('furuyume_remembered', newUser.login); // Auto remember on reg
             
             closeModal('register-modal');
             renderProfile();
-            alert('Регистрация успешна! Теперь вы авторизованы.');
-            // Reset modal form for next time
+            showNotification('Регистрация успешна!', 'success');
+            
+            // Reset
             document.getElementById('reg-step-1').style.display = 'block';
             document.getElementById('reg-step-2').style.display = 'none';
+            document.getElementById('reg-login').value = '';
+            document.getElementById('reg-pass').value = '';
+            document.getElementById('reg-pass-repeat').value = '';
+            document.getElementById('reg-code').value = '';
         }
 
         function performLogin() {
@@ -626,22 +719,43 @@
             const pass = document.getElementById('login-pass').value;
             const remember = document.getElementById('remember-me').checked;
 
-            if(!login || !pass) return alert('Заполните все поля');
+            if(!login || !pass) return showNotification('Заполните все поля', 'error');
 
-            // SIMULATION
-            currentUser = { login: login, fc: 0 };
-            if(remember) localStorage.setItem('furuyume_user', JSON.stringify(currentUser));
+            // Try to find user in storage
+            const storedData = localStorage.getItem('furuyume_user_' + login);
+            
+            if (!storedData) {
+                return showNotification('Пользователь не найден', 'error');
+            }
+
+            const userData = JSON.parse(storedData);
+            if (userData.pass !== pass) {
+                return showNotification('Неверный пароль', 'error');
+            }
+
+            // Success
+            currentUser = userData;
+            if(remember) {
+                localStorage.setItem('furuyume_remembered', login);
+            } else {
+                localStorage.removeItem('furuyume_remembered');
+            }
             
             closeModal('login-modal');
             renderProfile();
-            if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            showNotification('Вы успешно вошли!', 'success');
+            
+            // Clear inputs
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-pass').value = '';
         }
 
         function logout() {
-            localStorage.removeItem('furuyume_user');
+            localStorage.removeItem('furuyume_remembered');
             currentUser = null;
             closeModal('profile-details-modal');
             renderProfile();
+            showNotification('Вы вышли из аккаунта', 'success');
         }
 
         function openChangePassword() {
@@ -652,10 +766,22 @@
         function submitPassChange() {
             const oldPass = document.getElementById('old-pass').value;
             const newPass = document.getElementById('new-pass').value;
-            if(!oldPass || !newPass) return alert('Заполните поля');
+
+            if(!oldPass || !newPass) return showNotification('Заполните все поля', 'error');
             
-            alert('Пароль успешно изменен!');
+            if (currentUser.pass !== oldPass) {
+                return showNotification('Старый пароль неверный', 'error');
+            }
+
+            // Update user
+            currentUser.pass = newPass;
+            localStorage.setItem('furuyume_user_' + currentUser.login, JSON.stringify(currentUser));
+            
+            showNotification('Пароль успешно изменен!', 'success');
             closeModal('change-pass-modal');
+            
+            document.getElementById('old-pass').value = '';
+            document.getElementById('new-pass').value = '';
         }
 
         // --- EXISTING CATALOG LOGIC ---
@@ -764,7 +890,10 @@
             const product = products.find(p => p.id === id);
             const container = document.getElementById('color-options-container');
             container.innerHTML = product.colors.map(c => `
-                <button class="color-option-btn" onclick="openColorGallery(${id}, '${c.name}', '${c.image}')">${c.name}</button>
+                <button class="color-option-btn" onclick="openColorGallery(${id}, '${c.name}', '${c.image}')">
+                    <span>${c.name}</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             `).join('');
             document.getElementById('color-select-modal').classList.add('open');
             if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
