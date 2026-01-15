@@ -41,7 +41,7 @@
         p { margin: 0; color: var(--secondary-text); }
         a { text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
-        /* --- NOTIFICATIONS (NEW) --- */
+        /* --- NOTIFICATIONS --- */
         #notification-area {
             position: fixed; top: 20px; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -483,7 +483,7 @@
             </div>
             <div class="profile-info-row">
                 <span class="profile-info-label">Баланс:</span>
-                <span class="profile-info-value">0 <span class="fc-badge">FC</span></span>
+                <span class="profile-info-value" id="details-fc">0 <span class="fc-badge">FC</span></span>
             </div>
             <div class="profile-info-row">
                 <span class="profile-info-label">Telegram ID:</span>
@@ -507,9 +507,6 @@
             <div class="form-group">
                 <label class="form-label">Новый пароль</label>
                 <input type="password" class="form-input" id="new-pass">
-            </div>
-            <div style="text-align: left; margin-bottom: 10px;">
-                <a href="#" onclick="showNotification('Мы отправили новый пароль в бот!', 'success'); closeModal('change-pass-modal');" style="font-size: 12px; color: #0077FF;">Забыли старый пароль?</a>
             </div>
             <button class="modal-btn" onclick="submitPassChange()">Сохранить</button>
             <span class="close-modal" onclick="closeModal('change-pass-modal')">Отмена</span>
@@ -589,6 +586,9 @@
         tg.setHeaderColor('secondary_bg_color'); 
         tg.setBackgroundColor('secondary_bg_color');
 
+        // --- BACKEND CONNECTION ---
+        const BACKEND_URL = "https://furuyume.online/api";
+
         // --- NOTIFICATIONS SYSTEM ---
         function showNotification(message, type = 'success') {
             const container = document.getElementById('notification-area');
@@ -617,18 +617,17 @@
         }
 
         // --- AUTH STATE & LOGIC ---
-        // !IMPORTANT: This logic works LOCAL ONLY. For real DB connection, we need Python backend.
         let currentUser = null; 
 
         function checkAuth() {
-            // Check if there is a remembered user
-            const rememberedLogin = localStorage.getItem('furuyume_remembered');
-            if (rememberedLogin) {
-                // If remembered, try to find the full user data
-                const userData = localStorage.getItem('furuyume_user_' + rememberedLogin);
-                if (userData) {
-                    currentUser = JSON.parse(userData);
-                }
+            // Check if there is a remembered user (stored as JSON)
+            const remembered = localStorage.getItem('furuyume_user_data');
+            if (remembered) {
+                currentUser = JSON.parse(remembered);
+            } else {
+                // Check session storage (if not remembered)
+                const sessionUser = sessionStorage.getItem('furuyume_user_data');
+                if (sessionUser) currentUser = JSON.parse(sessionUser);
             }
             renderProfile();
         }
@@ -647,7 +646,8 @@
                 `;
                 // Fill details modal
                 document.getElementById('details-login').innerText = currentUser.login;
-                document.getElementById('details-tg-id').innerText = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "Неизвестно";
+                document.getElementById('details-fc').innerHTML = `${currentUser.fc} <span class="fc-badge">FC</span>`;
+                document.getElementById('details-tg-id').innerText = currentUser.tg_id || "Скрыт";
             } else {
                 // GUEST VIEW
                 container.innerHTML = `
@@ -666,96 +666,127 @@
 
         let tempRegData = {};
 
-        function regNextStep() {
+        async function regNextStep() {
             const login = document.getElementById('reg-login').value;
             const pass = document.getElementById('reg-pass').value;
             const passRep = document.getElementById('reg-pass-repeat').value;
 
-            if(!login || login.length > 12) return showNotification('Логин слишком длинный (макс 12)', 'error');
+            if(!login || login.length > 12) return showNotification('Логин слишком длинный', 'error');
             if(!login || login.length < 3) return showNotification('Логин слишком короткий', 'error');
             if(!pass) return showNotification('Введите пароль', 'error');
             if(pass !== passRep) return showNotification('Пароли не совпадают', 'error');
             
-            // Check if user already exists in LocalStorage
-            if(localStorage.getItem('furuyume_user_' + login)) {
-                return showNotification('Такой логин уже занят', 'error');
+            // Get Telegram ID
+            const tg_id = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
+            if(!tg_id) return showNotification('Зайдите через Telegram!', 'error');
+
+            try {
+                // REAL REQUEST TO SERVER
+                const res = await fetch(`${BACKEND_URL}/send_code`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ tg_id: tg_id })
+                });
+                const data = await res.json();
+                
+                if(data.status === 'success') {
+                    tempRegData = { login, pass, tg_id };
+                    document.getElementById('reg-step-1').style.display = 'none';
+                    document.getElementById('reg-step-2').style.display = 'block';
+                    showNotification('Код отправлен в бот!', 'success');
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (e) {
+                console.error(e);
+                showNotification('Ошибка сети. Сервер доступен?', 'error');
             }
-
-            tempRegData = { login, pass };
-
-            document.getElementById('reg-step-1').style.display = 'none';
-            document.getElementById('reg-step-2').style.display = 'block';
-            showNotification('Код отправлен в бот (тест: 0000)', 'success');
         }
 
-        function finishRegistration() {
+        async function finishRegistration() {
             const code = document.getElementById('reg-code').value;
-            if(code !== '0000') return showNotification('Неверный код (введите 0000)', 'error');
+            if(!code) return showNotification('Введите код', 'error');
 
-            const newUser = { login: tempRegData.login, pass: tempRegData.pass, fc: 0 };
-            
-            // Save specific user data
-            localStorage.setItem('furuyume_user_' + newUser.login, JSON.stringify(newUser));
-            
-            // Auto login
-            currentUser = newUser;
-            localStorage.setItem('furuyume_remembered', newUser.login); // Auto remember on reg
-            
-            closeModal('register-modal');
-            renderProfile();
-            showNotification('Регистрация успешна!', 'success');
-            
-            // Reset
-            document.getElementById('reg-step-1').style.display = 'block';
-            document.getElementById('reg-step-2').style.display = 'none';
-            document.getElementById('reg-login').value = '';
-            document.getElementById('reg-pass').value = '';
-            document.getElementById('reg-pass-repeat').value = '';
-            document.getElementById('reg-code').value = '';
+            try {
+                const res = await fetch(`${BACKEND_URL}/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ ...tempRegData, code: code })
+                });
+                const data = await res.json();
+
+                if(data.status === 'success') {
+                    // Success! Auto-login
+                    currentUser = { login: tempRegData.login, fc: 0, tg_id: tempRegData.tg_id };
+                    
+                    // Save to local storage (auto remember on register)
+                    localStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
+                    
+                    closeModal('register-modal');
+                    renderProfile();
+                    showNotification('Регистрация успешна!', 'success');
+                    
+                    // Reset forms
+                    document.getElementById('reg-step-1').style.display = 'block';
+                    document.getElementById('reg-step-2').style.display = 'none';
+                    document.getElementById('reg-login').value = '';
+                    document.getElementById('reg-pass').value = '';
+                    document.getElementById('reg-pass-repeat').value = '';
+                    document.getElementById('reg-code').value = '';
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка сети', 'error');
+            }
         }
 
-        function performLogin() {
+        async function performLogin() {
             const login = document.getElementById('login-username').value;
             const pass = document.getElementById('login-pass').value;
             const remember = document.getElementById('remember-me').checked;
 
-            if(!login || !pass) return showNotification('Заполните все поля', 'error');
+            if(!login || !pass) return showNotification('Заполните поля', 'error');
 
-            // Try to find user in storage
-            const storedData = localStorage.getItem('furuyume_user_' + login);
-            
-            if (!storedData) {
-                return showNotification('Пользователь не найден', 'error');
-            }
+            try {
+                const res = await fetch(`${BACKEND_URL}/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ login: login, pass: pass })
+                });
+                const data = await res.json();
 
-            const userData = JSON.parse(storedData);
-            if (userData.pass !== pass) {
-                return showNotification('Неверный пароль', 'error');
+                if(data.status === 'success') {
+                    currentUser = data.user;
+                    
+                    if (remember) {
+                        localStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
+                    } else {
+                        sessionStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
+                    }
+                    
+                    closeModal('login-modal');
+                    renderProfile();
+                    showNotification('Успешный вход!', 'success');
+                    
+                    // Clear inputs
+                    document.getElementById('login-username').value = '';
+                    document.getElementById('login-pass').value = '';
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка сети', 'error');
             }
-
-            // Success
-            currentUser = userData;
-            if(remember) {
-                localStorage.setItem('furuyume_remembered', login);
-            } else {
-                localStorage.removeItem('furuyume_remembered');
-            }
-            
-            closeModal('login-modal');
-            renderProfile();
-            showNotification('Вы успешно вошли!', 'success');
-            
-            // Clear inputs
-            document.getElementById('login-username').value = '';
-            document.getElementById('login-pass').value = '';
         }
 
         function logout() {
-            localStorage.removeItem('furuyume_remembered');
+            localStorage.removeItem('furuyume_user_data');
+            sessionStorage.removeItem('furuyume_user_data');
             currentUser = null;
             closeModal('profile-details-modal');
             renderProfile();
-            showNotification('Вы вышли из аккаунта', 'success');
+            showNotification('Вы вышли', 'success');
         }
 
         function openChangePassword() {
@@ -763,25 +794,31 @@
             openModal('change-pass-modal');
         }
 
-        function submitPassChange() {
+        async function submitPassChange() {
             const oldPass = document.getElementById('old-pass').value;
             const newPass = document.getElementById('new-pass').value;
 
-            if(!oldPass || !newPass) return showNotification('Заполните все поля', 'error');
-            
-            if (currentUser.pass !== oldPass) {
-                return showNotification('Старый пароль неверный', 'error');
-            }
+            if(!oldPass || !newPass) return showNotification('Заполните поля', 'error');
 
-            // Update user
-            currentUser.pass = newPass;
-            localStorage.setItem('furuyume_user_' + currentUser.login, JSON.stringify(currentUser));
-            
-            showNotification('Пароль успешно изменен!', 'success');
-            closeModal('change-pass-modal');
-            
-            document.getElementById('old-pass').value = '';
-            document.getElementById('new-pass').value = '';
+            try {
+                const res = await fetch(`${BACKEND_URL}/change_pass`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ login: currentUser.login, old_pass: oldPass, new_pass: newPass })
+                });
+                const data = await res.json();
+
+                if(data.status === 'success') {
+                    showNotification('Пароль изменен!', 'success');
+                    closeModal('change-pass-modal');
+                    document.getElementById('old-pass').value = '';
+                    document.getElementById('new-pass').value = '';
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка сети', 'error');
+            }
         }
 
         // --- EXISTING CATALOG LOGIC ---
