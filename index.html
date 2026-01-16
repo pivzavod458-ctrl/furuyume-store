@@ -20,6 +20,7 @@
             --accent-black: #1a1a1a;
             --error-color: #ff3b30;
             --success-color: #34c759;
+            --warn-color: #FFD700;
         }
 
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; outline: none; }
@@ -63,6 +64,22 @@
         .notification-toast i { font-size: 16px; }
         .notification-toast.success i { color: var(--success-color); }
         .notification-toast.error i { color: var(--error-color); }
+
+        /* --- PASSWORD STRENGTH BARS --- */
+        .strength-meter {
+            display: flex; gap: 5px; margin-top: 8px; height: 4px;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .strength-meter.visible { opacity: 1; }
+        .strength-bar {
+            flex: 1; background: #e0e0e0; border-radius: 2px;
+            transition: background-color 0.3s ease;
+        }
+        /* Levels */
+        .strength-weak .bar-1 { background-color: var(--error-color); }
+        .strength-medium .bar-1, .strength-medium .bar-2 { background-color: var(--warn-color); }
+        .strength-strong .bar-1, .strength-strong .bar-2, .strength-strong .bar-3 { background-color: var(--success-color); }
+
 
         /* --- UI ELEMENTS --- */
         #preloader {
@@ -428,12 +445,17 @@
                     <input type="text" class="form-input" id="reg-login" maxlength="12" placeholder="Например: sasha_pro">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Пароль (6-14 симв., буквы и цифры)</label>
-                    <input type="password" class="form-input" id="reg-pass" placeholder="••••••">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-input" id="reg-pass" placeholder="Придумайте пароль">
+                    <div class="strength-meter" id="pass-strength">
+                        <div class="strength-bar bar-1"></div>
+                        <div class="strength-bar bar-2"></div>
+                        <div class="strength-bar bar-3"></div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Повторите пароль</label>
-                    <input type="password" class="form-input" id="reg-pass-repeat" placeholder="••••••">
+                    <input type="password" class="form-input" id="reg-pass-repeat" placeholder="Повторите">
                 </div>
                 <button class="modal-btn" onclick="regNextStep()">Продолжить</button>
             </div>
@@ -508,7 +530,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Новый пароль</label>
-                    <input type="password" class="form-input" id="reset-new-pass" placeholder="6-14 символов">
+                    <input type="password" class="form-input" id="reset-new-pass" placeholder="Придумайте новый">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Повторите</label>
@@ -554,7 +576,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Новый пароль</label>
-                <input type="password" class="form-input" id="new-pass" placeholder="6-14 символов">
+                <input type="password" class="form-input" id="new-pass" placeholder="Придумайте новый">
             </div>
             
             <div style="text-align: center; margin-top: 10px;">
@@ -648,16 +670,46 @@
                 const regex = /^[a-zA-Z0-9]{4,12}$/;
                 return regex.test(text);
             }
+            // PASSWORD: Just check if not empty (visual check handles colors)
             if (type === 'password') {
-                // 6-14 chars, must have 1 letter and 1 number, no cyrillic
-                if (text.length < 6 || text.length > 14) return false;
-                if (/[а-яА-ЯёЁ]/.test(text)) return false; // No Russian
-                if (!/[a-zA-Z]/.test(text)) return false; // At least one letter
-                if (!/[0-9]/.test(text)) return false;    // At least one number
-                return true;
+                return text.length > 0;
             }
             return false;
         }
+
+        // --- VISUAL PASSWORD STRENGTH ---
+        function checkPassStrength(password) {
+            const meter = document.getElementById('pass-strength');
+            const bars = meter.querySelectorAll('.strength-bar');
+            
+            if (password.length === 0) {
+                meter.classList.remove('visible');
+                meter.className = 'strength-meter'; // reset classes
+                return;
+            }
+            
+            meter.classList.add('visible');
+            meter.className = 'strength-meter visible'; // reset base
+
+            // Simple logic for colors
+            let score = 0;
+            if (password.length > 4) score++;
+            if (password.length > 8) score++;
+            if (/[0-9]/.test(password) && /[a-zA-Z]/.test(password)) score++;
+
+            if (score <= 1) meter.classList.add('strength-weak');
+            else if (score === 2) meter.classList.add('strength-medium');
+            else meter.classList.add('strength-strong');
+        }
+
+        // Attach listener
+        document.addEventListener('DOMContentLoaded', () => {
+            const regPassInput = document.getElementById('reg-pass');
+            if(regPassInput) {
+                regPassInput.addEventListener('input', (e) => checkPassStrength(e.target.value));
+            }
+        });
+
 
         function showNotification(message, type = 'success') {
             const container = document.getElementById('notification-area');
@@ -730,7 +782,7 @@
 
             // VALIDATION
             if (!validateInput(login, 'login')) return showNotification('Логин: 4-12 латинских букв/цифр', 'error');
-            if (!validateInput(pass, 'password')) return showNotification('Пароль: 6-14 симв, буквы+цифры', 'error');
+            if (pass.length < 1) return showNotification('Введите пароль', 'error');
             if (pass !== passRep) return showNotification('Пароли не совпадают', 'error');
             
             const tg_id = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
@@ -783,6 +835,8 @@
                     document.getElementById('reg-pass').value = '';
                     document.getElementById('reg-pass-repeat').value = '';
                     document.getElementById('reg-code').value = '';
+                    // Reset bars
+                    document.getElementById('pass-strength').className = 'strength-meter';
                 } else {
                     showNotification(data.message, 'error');
                 }
@@ -891,7 +945,7 @@
             const newPassRep = document.getElementById('reset-new-pass-rep').value;
 
             if(!code) return showNotification('Введите код', 'error');
-            if(!validateInput(newPass, 'password')) return showNotification('Пароль: 6-14 симв, буквы+цифры', 'error');
+            if(newPass.length < 1) return showNotification('Введите новый пароль', 'error');
             if(newPass !== newPassRep) return showNotification('Пароли не совпадают', 'error');
 
             try {
@@ -940,7 +994,7 @@
             const newPass = document.getElementById('new-pass').value;
 
             if(!oldPass) return showNotification('Введите старый пароль', 'error');
-            if(!validateInput(newPass, 'password')) return showNotification('Новый пароль: 6-14 симв, буквы+цифры', 'error');
+            if(newPass.length < 1) return showNotification('Введите новый пароль', 'error');
 
             try {
                 const res = await fetch(`${BACKEND_URL}/change_pass`, {
