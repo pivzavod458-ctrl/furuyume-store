@@ -441,12 +441,12 @@
             
             <div id="reg-step-1">
                 <div class="form-group">
-                    <label class="form-label">Логин (4-12 симв., только латиница)</label>
-                    <input type="text" class="form-input" id="reg-login" maxlength="12" placeholder="Например: sasha_pro">
+                    <label class="form-label">Логин</label>
+                    <input type="text" class="form-input" id="reg-login" maxlength="12" placeholder="">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Пароль</label>
-                    <input type="password" class="form-input" id="reg-pass" placeholder="Придумайте пароль">
+                    <input type="password" class="form-input" id="reg-pass" placeholder="">
                     <div class="strength-meter" id="pass-strength">
                         <div class="strength-bar bar-1"></div>
                         <div class="strength-bar bar-2"></div>
@@ -455,7 +455,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Повторите пароль</label>
-                    <input type="password" class="form-input" id="reg-pass-repeat" placeholder="Повторите">
+                    <input type="password" class="form-input" id="reg-pass-repeat" placeholder="">
                 </div>
                 <button class="modal-btn" onclick="regNextStep()">Продолжить</button>
             </div>
@@ -464,7 +464,7 @@
                 <p style="margin-bottom: 15px; color: #1a1a1a;">Мы отправили код подтверждения в наш бот.</p>
                 <div class="form-group">
                     <label class="form-label">Введите код</label>
-                    <input type="number" class="form-input" id="reg-code" placeholder="1234" style="text-align: center; letter-spacing: 2px;">
+                    <input type="number" class="form-input" id="reg-code" placeholder="" style="text-align: center; letter-spacing: 2px;">
                 </div>
                 <button class="modal-btn" onclick="finishRegistration()">Подтвердить</button>
             </div>
@@ -501,7 +501,7 @@
             <div id="login-step-2" style="display: none;">
                 <p style="margin-bottom: 15px;">Введите код из бота для входа</p>
                 <div class="form-group">
-                    <input type="number" class="form-input" id="login-code" placeholder="1234" style="text-align: center;">
+                    <input type="number" class="form-input" id="login-code" placeholder="" style="text-align: center;">
                 </div>
                 <button class="modal-btn" onclick="verifyLogin()">Подтвердить</button>
             </div>
@@ -526,14 +526,14 @@
                 <p style="margin-bottom: 10px;">Код отправлен в бот</p>
                 <div class="form-group">
                     <label class="form-label">Код</label>
-                    <input type="number" class="form-input" id="reset-code" placeholder="1234" style="text-align: center;">
+                    <input type="number" class="form-input" id="reset-code" placeholder="" style="text-align: center;">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Новый пароль</label>
-                    <input type="password" class="form-input" id="reset-new-pass" placeholder="Придумайте новый">
+                    <input type="password" class="form-input" id="reset-new-pass" placeholder="">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Повторите</label>
+                    <label class="form-label">Повторите пароль</label>
                     <input type="password" class="form-input" id="reset-new-pass-rep">
                 </div>
                 <button class="modal-btn" onclick="finishResetPass()">Сменить пароль</button>
@@ -576,7 +576,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Новый пароль</label>
-                <input type="password" class="form-input" id="new-pass" placeholder="Придумайте новый">
+                <input type="password" class="form-input" id="new-pass" placeholder="">
             </div>
             
             <div style="text-align: center; margin-top: 10px;">
