@@ -424,11 +424,11 @@
             
             <div id="reg-step-1">
                 <div class="form-group">
-                    <label class="form-label">Логин (макс. 12 символов)</label>
+                    <label class="form-label">Логин (4-12 симв., только латиница)</label>
                     <input type="text" class="form-input" id="reg-login" maxlength="12" placeholder="Например: sasha_pro">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Пароль</label>
+                    <label class="form-label">Пароль (6-14 симв., буквы и цифры)</label>
                     <input type="password" class="form-input" id="reg-pass" placeholder="••••••">
                 </div>
                 <div class="form-group">
@@ -442,7 +442,7 @@
                 <p style="margin-bottom: 15px; color: #1a1a1a;">Мы отправили код подтверждения в наш бот.</p>
                 <div class="form-group">
                     <label class="form-label">Введите код</label>
-                    <input type="number" class="form-input" id="reg-code" placeholder="123456" style="text-align: center; letter-spacing: 2px;">
+                    <input type="number" class="form-input" id="reg-code" placeholder="1234" style="text-align: center; letter-spacing: 2px;">
                 </div>
                 <button class="modal-btn" onclick="finishRegistration()">Подтвердить</button>
             </div>
@@ -455,21 +455,69 @@
         <div class="modal">
             <h3>Вход</h3>
             <p style="margin-bottom: 20px;">С возвращением!</p>
-            <div class="form-group">
-                <label class="form-label">Логин</label>
-                <input type="text" class="form-input" id="login-username" placeholder="Ваш логин">
+            
+            <div id="login-step-1">
+                <div class="form-group">
+                    <label class="form-label">Логин</label>
+                    <input type="text" class="form-input" id="login-username" placeholder="Ваш логин">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-input" id="login-pass" placeholder="••••••">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <label class="checkbox-container" style="margin-top:0;">
+                        <input type="checkbox" class="checkbox-input" id="remember-me">
+                        <div class="checkbox-custom"><i class="fas fa-check" style="font-size: 10px;"></i></div>
+                        <span>Запомнить</span>
+                    </label>
+                    <a href="#" onclick="openForgotPass()" style="font-size: 12px; color: #0077FF;">Забыли пароль?</a>
+                </div>
+                <button class="modal-btn" onclick="performLogin()">Войти</button>
             </div>
-            <div class="form-group">
-                <label class="form-label">Пароль</label>
-                <input type="password" class="form-input" id="login-pass" placeholder="••••••">
+
+            <div id="login-step-2" style="display: none;">
+                <p style="margin-bottom: 15px;">Введите код из бота для входа</p>
+                <div class="form-group">
+                    <input type="number" class="form-input" id="login-code" placeholder="1234" style="text-align: center;">
+                </div>
+                <button class="modal-btn" onclick="verifyLogin()">Подтвердить</button>
             </div>
-            <label class="checkbox-container">
-                <input type="checkbox" class="checkbox-input" id="remember-me">
-                <div class="checkbox-custom"><i class="fas fa-check" style="font-size: 10px;"></i></div>
-                <span>Запомнить меня</span>
-            </label>
-            <button class="modal-btn" onclick="performLogin()">Войти</button>
+
             <span class="close-modal" onclick="closeModal('login-modal')">Закрыть</span>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="forgot-pass-modal">
+        <div class="modal">
+            <h3>Восстановление</h3>
+            
+            <div id="forgot-step-1">
+                <p style="margin-bottom: 15px;">Введите ваш логин</p>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="forgot-login" placeholder="Логин">
+                </div>
+                <button class="modal-btn" onclick="requestResetCode()">Отправить код</button>
+            </div>
+
+            <div id="forgot-step-2" style="display: none;">
+                <p style="margin-bottom: 10px;">Код отправлен в бот</p>
+                <div class="form-group">
+                    <label class="form-label">Код</label>
+                    <input type="number" class="form-input" id="reset-code" placeholder="1234" style="text-align: center;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Новый пароль</label>
+                    <input type="password" class="form-input" id="reset-new-pass" placeholder="6-14 символов">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Повторите</label>
+                    <input type="password" class="form-input" id="reset-new-pass-rep">
+                </div>
+                <button class="modal-btn" onclick="finishResetPass()">Сменить пароль</button>
+            </div>
+
+            <span class="close-modal" onclick="closeModal('forgot-pass-modal')">Отмена</span>
         </div>
     </div>
 
@@ -506,8 +554,13 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Новый пароль</label>
-                <input type="password" class="form-input" id="new-pass">
+                <input type="password" class="form-input" id="new-pass" placeholder="6-14 символов">
             </div>
+            
+            <div style="text-align: center; margin-top: 10px;">
+                <a href="#" onclick="closeModal('change-pass-modal'); openForgotPass();" style="font-size: 13px; color: #0077FF; font-weight: 500;">Восстановить пароль?</a>
+            </div>
+
             <button class="modal-btn" onclick="submitPassChange()">Сохранить</button>
             <span class="close-modal" onclick="closeModal('change-pass-modal')">Отмена</span>
         </div>
@@ -586,46 +639,52 @@
         tg.setHeaderColor('secondary_bg_color'); 
         tg.setBackgroundColor('secondary_bg_color');
 
-        // --- BACKEND CONNECTION ---
         const BACKEND_URL = "https://furuyume.online/api";
 
-        // --- NOTIFICATIONS SYSTEM ---
+        // --- VALIDATION UTILS ---
+        function validateInput(text, type) {
+            if (type === 'login') {
+                // 4-12 chars, letters & numbers ONLY (no cyrillic, no spaces)
+                const regex = /^[a-zA-Z0-9]{4,12}$/;
+                return regex.test(text);
+            }
+            if (type === 'password') {
+                // 6-14 chars, must have 1 letter and 1 number, no cyrillic
+                if (text.length < 6 || text.length > 14) return false;
+                if (/[а-яА-ЯёЁ]/.test(text)) return false; // No Russian
+                if (!/[a-zA-Z]/.test(text)) return false; // At least one letter
+                if (!/[0-9]/.test(text)) return false;    // At least one number
+                return true;
+            }
+            return false;
+        }
+
         function showNotification(message, type = 'success') {
             const container = document.getElementById('notification-area');
             const toast = document.createElement('div');
             toast.className = `notification-toast ${type}`;
-            
             let icon = 'fa-check-circle';
             if (type === 'error') icon = 'fa-exclamation-circle';
-            
             toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
             container.appendChild(toast);
-
-            // Animate in
             requestAnimationFrame(() => { toast.classList.add('visible'); });
-
-            // Remove after delay
             setTimeout(() => {
                 toast.classList.remove('visible');
                 setTimeout(() => { toast.remove(); }, 400);
             }, 3000);
-
             if(tg.HapticFeedback) {
                 if(type === 'error') tg.HapticFeedback.notificationOccurred('error');
                 else tg.HapticFeedback.notificationOccurred('success');
             }
         }
 
-        // --- AUTH STATE & LOGIC ---
         let currentUser = null; 
 
         function checkAuth() {
-            // Check if there is a remembered user (stored as JSON)
             const remembered = localStorage.getItem('furuyume_user_data');
             if (remembered) {
                 currentUser = JSON.parse(remembered);
             } else {
-                // Check session storage (if not remembered)
                 const sessionUser = sessionStorage.getItem('furuyume_user_data');
                 if (sessionUser) currentUser = JSON.parse(sessionUser);
             }
@@ -635,7 +694,6 @@
         function renderProfile() {
             const container = document.getElementById('profile-content');
             if (currentUser) {
-                // LOGGED IN VIEW
                 container.innerHTML = `
                     <div class="profile-header-container">
                         <div class="profile-avatar"><i class="fas fa-user"></i></div>
@@ -644,12 +702,10 @@
                         <button class="modal-btn" style="margin-top:0;" onclick="openModal('profile-details-modal')">Открыть профиль</button>
                     </div>
                 `;
-                // Fill details modal
                 document.getElementById('details-login').innerText = currentUser.login;
                 document.getElementById('details-fc').innerHTML = `${currentUser.fc} <span class="fc-badge">FC</span>`;
                 document.getElementById('details-tg-id').innerText = currentUser.tg_id || "Скрыт";
             } else {
-                // GUEST VIEW
                 container.innerHTML = `
                     <div class="profile-header-container">
                         <div class="profile-avatar" style="background: #f0f0f0; color: #ccc;"><i class="fas fa-user-slash"></i></div>
@@ -665,27 +721,26 @@
         }
 
         let tempRegData = {};
+        let tempLoginData = {};
 
         async function regNextStep() {
             const login = document.getElementById('reg-login').value;
             const pass = document.getElementById('reg-pass').value;
             const passRep = document.getElementById('reg-pass-repeat').value;
 
-            if(!login || login.length > 12) return showNotification('Логин слишком длинный', 'error');
-            if(!login || login.length < 3) return showNotification('Логин слишком короткий', 'error');
-            if(!pass) return showNotification('Введите пароль', 'error');
-            if(pass !== passRep) return showNotification('Пароли не совпадают', 'error');
+            // VALIDATION
+            if (!validateInput(login, 'login')) return showNotification('Логин: 4-12 латинских букв/цифр', 'error');
+            if (!validateInput(pass, 'password')) return showNotification('Пароль: 6-14 симв, буквы+цифры', 'error');
+            if (pass !== passRep) return showNotification('Пароли не совпадают', 'error');
             
-            // Get Telegram ID
             const tg_id = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
             if(!tg_id) return showNotification('Зайдите через Telegram!', 'error');
 
             try {
-                // REAL REQUEST TO SERVER
                 const res = await fetch(`${BACKEND_URL}/send_code`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ tg_id: tg_id })
+                    body: JSON.stringify({ tg_id: tg_id, action: 'register' })
                 });
                 const data = await res.json();
                 
@@ -698,8 +753,7 @@
                     showNotification(data.message, 'error');
                 }
             } catch (e) {
-                console.error(e);
-                showNotification('Ошибка сети. Сервер доступен?', 'error');
+                showNotification('Ошибка сети', 'error');
             }
         }
 
@@ -716,17 +770,13 @@
                 const data = await res.json();
 
                 if(data.status === 'success') {
-                    // Success! Auto-login
                     currentUser = { login: tempRegData.login, fc: 0, tg_id: tempRegData.tg_id };
-                    
-                    // Save to local storage (auto remember on register)
                     localStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
                     
                     closeModal('register-modal');
                     renderProfile();
                     showNotification('Регистрация успешна!', 'success');
                     
-                    // Reset forms
                     document.getElementById('reg-step-1').style.display = 'block';
                     document.getElementById('reg-step-2').style.display = 'none';
                     document.getElementById('reg-login').value = '';
@@ -744,7 +794,6 @@
         async function performLogin() {
             const login = document.getElementById('login-username').value;
             const pass = document.getElementById('login-pass').value;
-            const remember = document.getElementById('remember-me').checked;
 
             if(!login || !pass) return showNotification('Заполните поля', 'error');
 
@@ -756,22 +805,114 @@
                 });
                 const data = await res.json();
 
+                if(data.status === '2fa_required') {
+                    tempLoginData = { tg_id: data.tg_id };
+                    document.getElementById('login-step-1').style.display = 'none';
+                    document.getElementById('login-step-2').style.display = 'block';
+                    showNotification('Введите код из бота', 'success');
+                } else {
+                    showNotification(data.message || 'Ошибка входа', 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка сети', 'error');
+            }
+        }
+
+        async function verifyLogin() {
+            const code = document.getElementById('login-code').value;
+            if(!code) return showNotification('Введите код', 'error');
+            const remember = document.getElementById('remember-me').checked;
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/verify_login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ tg_id: tempLoginData.tg_id, code: code })
+                });
+                const data = await res.json();
+
                 if(data.status === 'success') {
                     currentUser = data.user;
-                    
-                    if (remember) {
-                        localStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
-                    } else {
-                        sessionStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
-                    }
+                    if (remember) localStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
+                    else sessionStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
                     
                     closeModal('login-modal');
                     renderProfile();
                     showNotification('Успешный вход!', 'success');
                     
-                    // Clear inputs
+                    // Reset login modal
+                    document.getElementById('login-step-1').style.display = 'block';
+                    document.getElementById('login-step-2').style.display = 'none';
                     document.getElementById('login-username').value = '';
                     document.getElementById('login-pass').value = '';
+                    document.getElementById('login-code').value = '';
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка сети', 'error');
+            }
+        }
+
+        // --- FORGOT PASS LOGIC ---
+        function openForgotPass() {
+            closeModal('login-modal');
+            openModal('forgot-pass-modal');
+        }
+
+        async function requestResetCode() {
+            const login = document.getElementById('forgot-login').value;
+            if(!login) return showNotification('Введите логин', 'error');
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/forgot_request`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ login: login })
+                });
+                const data = await res.json();
+
+                if(data.status === 'success') {
+                    tempLoginData = { tg_id: data.tg_id }; // Reuse temp var
+                    document.getElementById('forgot-step-1').style.display = 'none';
+                    document.getElementById('forgot-step-2').style.display = 'block';
+                    showNotification('Код отправлен!', 'success');
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка сети', 'error');
+            }
+        }
+
+        async function finishResetPass() {
+            const code = document.getElementById('reset-code').value;
+            const newPass = document.getElementById('reset-new-pass').value;
+            const newPassRep = document.getElementById('reset-new-pass-rep').value;
+
+            if(!code) return showNotification('Введите код', 'error');
+            if(!validateInput(newPass, 'password')) return showNotification('Пароль: 6-14 симв, буквы+цифры', 'error');
+            if(newPass !== newPassRep) return showNotification('Пароли не совпадают', 'error');
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/reset_pass`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ tg_id: tempLoginData.tg_id, code: code, new_pass: newPass })
+                });
+                const data = await res.json();
+
+                if(data.status === 'success') {
+                    showNotification('Пароль изменен! Войдите.', 'success');
+                    closeModal('forgot-pass-modal');
+                    openModal('login-modal');
+                    // Reset form
+                    document.getElementById('forgot-step-1').style.display = 'block';
+                    document.getElementById('forgot-step-2').style.display = 'none';
+                    document.getElementById('forgot-login').value = '';
+                    document.getElementById('reset-code').value = '';
+                    document.getElementById('reset-new-pass').value = '';
+                    document.getElementById('reset-new-pass-rep').value = '';
                 } else {
                     showNotification(data.message, 'error');
                 }
@@ -798,7 +939,8 @@
             const oldPass = document.getElementById('old-pass').value;
             const newPass = document.getElementById('new-pass').value;
 
-            if(!oldPass || !newPass) return showNotification('Заполните поля', 'error');
+            if(!oldPass) return showNotification('Введите старый пароль', 'error');
+            if(!validateInput(newPass, 'password')) return showNotification('Новый пароль: 6-14 симв, буквы+цифры', 'error');
 
             try {
                 const res = await fetch(`${BACKEND_URL}/change_pass`, {
@@ -821,7 +963,7 @@
             }
         }
 
-        // --- EXISTING CATALOG LOGIC ---
+        // --- EXISTING CATALOG LOGIC (No changes) ---
         const products = [
             { id: 1, name: "Adidas Japan track jacket", category: "olympiyka", price: 7600, oldPrice: 11800, image: "japan.png" },
             { 
