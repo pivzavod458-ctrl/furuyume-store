@@ -15,7 +15,7 @@
             --secondary-text: #8e8e93;
             --glass-bg: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(255, 255, 255, 0.8);
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.04); 
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
             --ios-bezier: cubic-bezier(0.25, 0.1, 0.25, 1);
             --accent-black: #1a1a1a;
             --error-color: #ff3b30;
@@ -33,7 +33,7 @@
             background: var(--bg-gradient);
             background-attachment: fixed;
             color: var(--text-color);
-            padding-bottom: 90px;
+            padding-bottom: 100px;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             padding-top: 10px;
@@ -60,12 +60,12 @@
         }
         .notification-toast {
             background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 12px 20px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            display: flex; align-items: center; gap: 10px;
-            transform: translateY(-50px); opacity: 0;
+            backdrop-filter: blur(12px);
+            padding: 14px 20px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            display: flex; align-items: center; gap: 12px;
+            transform: translateY(-60px); opacity: 0;
             transition: all 0.4s var(--ios-bezier);
             font-size: 13px; font-weight: 600; color: #000;
             border: 1px solid rgba(0,0,0,0.05);
@@ -74,10 +74,11 @@
         .notification-toast i { font-size: 16px; }
         .notification-toast.success i { color: var(--success-color); }
         .notification-toast.error i { color: var(--error-color); }
-        .notification-toast.info i { color: var(--blue-link); }
+        .notification-toast.sale-toast i { color: var(--sale-color); }
+        .notification-toast.original-toast i { color: var(--success-color); }
 
         /* --- PASSWORD STRENGTH --- */
-        .strength-meter { display: flex; gap: 5px; margin-top: 8px; height: 4px; opacity: 0; transition: opacity 0.3s; }
+        .strength-meter { display: flex; gap: 5px; margin-top: 10px; height: 4px; opacity: 0; transition: opacity 0.3s; }
         .strength-meter.visible { opacity: 1; }
         .strength-bar { flex: 1; background: #e0e0e0; border-radius: 2px; transition: background-color 0.3s ease; }
         .strength-weak .bar-1 { background-color: var(--error-color); }
@@ -92,7 +93,7 @@
             justify-content: center; align-items: center;
             transition: opacity 0.5s ease;
         }
-        .spinner { width: 40px; height: 40px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .spinner { width: 40px; height: 40px; border: 3px solid #ddd; border-top: 3px solid #1a1a1a; border-radius: 50%; animation: spin 0.8s linear infinite; }
         .loading-text { margin-top: 15px; font-size: 13px; font-weight: 500; color: #888; animation: pulse 1.5s infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
@@ -102,10 +103,10 @@
         .page.active { display: block; opacity: 1; transform: scale(1); }
 
         /* --- CATALOG --- */
-        .catalog-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding: 0 5px; height: 44px; }
-        .category-scroll { flex-grow: 1; overflow-x: auto; display: flex; gap: 8px; scrollbar-width: none; padding-right: 10px; height: 100%; align-items: center; }
+        .catalog-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 0 5px; height: 44px; }
+        .category-scroll { flex-grow: 1; overflow-x: auto; display: flex; gap: 10px; scrollbar-width: none; padding-right: 10px; height: 100%; align-items: center; }
         .category-scroll::-webkit-scrollbar { display: none; }
-        .cat-btn { background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.05); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; color: #666; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+        .cat-btn { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.05); padding: 10px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; color: #666; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
         .cat-btn.active { background: #1a1a1a; color: white; font-weight: 600; border-color: #1a1a1a; }
         .header-cart-btn { flex-shrink: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--glass-bg); border-radius: 14px; border: 1px solid var(--glass-border); color: #1a1a1a; font-size: 18px; cursor: pointer; box-shadow: var(--shadow); position: relative; }
         .header-cart-badge { position: absolute; top: -4px; right: -4px; background: #ff3b30; color: #fff; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: all 0.3s; border: 2px solid #fff; }
@@ -121,124 +122,189 @@
         .slider-btn { display: inline-block; background: #000; color: #fff; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600; border: 1px solid rgba(0,0,0,0.1); }
 
         /* --- HOME MENU --- */
-        .home-menu { display: grid; gap: 12px; margin-top: 10px; }
-        .home-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 18px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; color: #1a1a1a; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.1s; }
+        .home-menu { display: grid; gap: 14px; margin-top: 10px; }
+        .home-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 20px; border-radius: 22px; display: flex; align-items: center; justify-content: space-between; color: #1a1a1a; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.1s; }
         .home-btn:active { transform: scale(0.97); }
-        .home-btn-content { display: flex; align-items: center; gap: 15px; }
-        .home-btn-icon { width: 32px; height: 32px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #333; }
+        .home-btn-content { display: flex; align-items: center; gap: 16px; }
+        .home-btn-icon { width: 36px; height: 36px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #333; }
         .home-btn-text { font-size: 15px; font-weight: 600; }
 
         /* --- PRODUCTS --- */
         .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .product-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; position: relative; }
+        
+        .product-card { 
+            background: var(--glass-bg); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 22px; 
+            padding: 12px; 
+            box-shadow: var(--shadow); 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+        }
         .product-card:active { transform: scale(0.98); transition: 0.2s; }
-        .product-image { width: 100%; aspect-ratio: 1/1; border-radius: 16px; margin-bottom: 12px; overflow: hidden; position: relative; background: transparent; }
+        
+        .product-image { 
+            width: 100%; 
+            aspect-ratio: 1/1; 
+            border-radius: 18px; 
+            margin-bottom: 12px; 
+            overflow: hidden; 
+            position: relative; 
+            background: transparent; 
+        }
         .product-image img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* NEW BADGES */
-        .card-badge { position: absolute; top: 10px; left: 10px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.15); cursor: pointer; transition: transform 0.2s; }
+        /* --- BADGES (SALE ICON) --- */
+        .card-badge { 
+            position: absolute; top: 12px; left: 12px; 
+            width: 32px; height: 32px; 
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 14px; z-index: 10; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            cursor: pointer; transition: transform 0.2s; 
+        }
         .card-badge:active { transform: scale(0.9); }
         .card-badge.sale { background: var(--sale-color); color: white; }
-        .card-badge.original { background: white; color: var(--success-color); border: 1px solid #eee; }
-        
-        .card-quick-add { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #1a1a1a; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; backdrop-filter: blur(4px); }
-        .card-quick-add:active { transform: scale(0.9); background: #1a1a1a; color: white; }
 
-        .product-title { font-size: 13px; font-weight: 600; line-height: 1.3; margin-bottom: 6px; flex-grow: 1; color: #000; }
-        .price-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 12px; }
-        .price-container { display: flex; flex-direction: column; align-items: flex-start; }
-        .product-price { font-size: 15px; font-weight: 700; color: #000; }
-        .old-price { font-size: 11px; color: #8e8e93; text-decoration: line-through; margin-left: 2px; }
-        .add-btn { width: 100%; padding: 12px 0; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        /* --- BADGE (ORIGINAL TEXT) --- */
+        .badge-text-original {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.85); color: white;
+            font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 5px 10px; border-radius: 8px;
+            z-index: 10; backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* --- QUICK ADD BUTTON (Updated) --- */
+        .card-quick-add { 
+            width: 32px; height: 32px; 
+            border-radius: 50%; 
+            background: #f0f0f0; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 14px; color: #333; 
+            cursor: pointer; transition: all 0.2s;
+            margin-left: 8px;
+        }
+        .card-quick-add:active { transform: scale(0.9); background: #e0e0e0; color: #000; }
+
+        /* --- PRODUCT DETAILS ALIGNMENT --- */
+        .product-title { 
+            font-size: 13px; font-weight: 600; line-height: 1.4; 
+            margin-bottom: 6px; flex-grow: 1; color: #000; 
+            padding: 0 4px;
+            min-height: 36px; /* Fix height alignment */
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        
+        .price-row { 
+            display: flex; align-items: center; justify-content: space-between; 
+            margin-bottom: 12px; padding: 0 4px; 
+            height: 32px; /* Fixed height for row */
+        }
+        .price-container { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+        .product-price { font-size: 16px; font-weight: 700; color: #000; line-height: 1; }
+        .old-price { font-size: 11px; color: #8e8e93; text-decoration: line-through; margin-top: 2px; }
+        
+        .add-btn { 
+            width: 100%; padding: 12px 0; 
+            background: #1a1a1a; color: white; 
+            border: none; border-radius: 16px; 
+            font-size: 13px; font-weight: 600; 
+            cursor: pointer; 
+        }
 
         /* --- CART --- */
-        .cart-item { background: var(--glass-bg); border-radius: 18px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); box-shadow: var(--shadow); transition: all 0.4s; overflow: hidden; }
+        .cart-item { background: var(--glass-bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); box-shadow: var(--shadow); transition: all 0.4s; overflow: hidden; }
         .cart-item.removing { opacity: 0; max-height: 0; margin: 0; padding: 0; border: none; transform: translateX(-20px); }
-        .cart-item-img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; margin-right: 12px; }
+        .cart-item-img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; margin-right: 14px; }
         .cart-item-details { display: flex; flex-direction: column; }
-        .cart-item-name { font-weight: 600; font-size: 13px; }
-        .cart-item-info { font-size: 11px; color: #888; }
-        .cart-item-price { font-size: 12px; color: #000; font-weight: 600; margin-top: 2px;}
+        .cart-item-name { font-weight: 600; font-size: 14px; margin-bottom: 2px;}
+        .cart-item-info { font-size: 12px; color: #888; }
+        .cart-item-price { font-size: 13px; color: #000; font-weight: 600; margin-top: 4px;}
         .total-block { margin-top: 25px; padding: 24px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); text-align: center; transition: all 0.4s; }
         .total-block.hidden { opacity: 0; transform: translateY(20px); max-height: 0; margin: 0; padding: 0; }
-        .checkout-btn { background: #000; color: white; width: 100%; padding: 16px; border-radius: 16px; font-size: 16px; font-weight: 600; margin-top: 15px; border: none; cursor: pointer; }
+        .checkout-btn { background: #000; color: white; width: 100%; padding: 18px; border-radius: 18px; font-size: 16px; font-weight: 600; margin-top: 15px; border: none; cursor: pointer; }
 
         /* --- AUTH & PROFILE --- */
-        .profile-header-container { background: var(--glass-bg); border-radius: 24px; padding: 30px 20px; text-align: center; border: 1px solid var(--glass-border); margin-bottom: 25px; box-shadow: var(--shadow); transition: all 0.3s ease; }
+        .profile-header-container { background: var(--glass-bg); border-radius: 26px; padding: 35px 20px; text-align: center; border: 1px solid var(--glass-border); margin-bottom: 25px; box-shadow: var(--shadow); transition: all 0.3s ease; }
         .profile-avatar { width: 80px; height: 80px; background: #1a1a1a; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; }
-        .auth-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-        .auth-btn { padding: 14px; border-radius: 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: transform 0.1s; width: 100%; }
+        .auth-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+        .auth-btn { padding: 16px; border-radius: 18px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: transform 0.1s; width: 100%; }
         .auth-btn.login { background: #1a1a1a; color: white; }
         .auth-btn.register { background: white; color: #1a1a1a; border: 1px solid rgba(0,0,0,0.1); }
         .auth-btn:active { transform: scale(0.96); }
-        .profile-info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 14px; }
+        .profile-info-row { display: flex; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 14px; }
         .profile-info-label { color: #8e8e93; font-weight: 500; }
         .profile-info-value { font-weight: 600; color: #1a1a1a; }
         .fc-badge { background: #FFD700; color: #000; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-left: 5px; }
-        .profile-action-btn { margin-top: 15px; background: rgba(0,0,0,0.03); color: #1a1a1a; width: 100%; padding: 12px; border-radius: 14px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; }
+        .profile-action-btn { margin-top: 20px; background: rgba(0,0,0,0.03); color: #1a1a1a; width: 100%; padding: 14px; border-radius: 16px; border: none; font-weight: 600; font-size: 14px; cursor: pointer; }
 
         /* --- FORM INPUTS --- */
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-label { display: block; font-size: 12px; color: #666; margin-bottom: 6px; font-weight: 500; padding-left: 5px; }
-        .form-input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.1); background: #f9f9f9; font-size: 15px; transition: border 0.2s; -webkit-appearance: none; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-label { display: block; font-size: 13px; color: #666; margin-bottom: 8px; font-weight: 500; padding-left: 5px; }
+        .form-input { width: 100%; padding: 16px 18px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.08); background: #f9f9f9; font-size: 16px; transition: border 0.2s; -webkit-appearance: none; }
         .form-input:focus { border-color: #1a1a1a; background: #fff; }
         
-        .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; cursor: pointer; }
-        .checkbox-custom { width: 20px; height: 20px; border-radius: 6px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; background: white; transition: all 0.2s; }
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 14px; cursor: pointer; }
+        .checkbox-custom { width: 22px; height: 22px; border-radius: 6px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; background: white; transition: all 0.2s; }
         .checkbox-custom i { opacity: 0; transform: scale(0.5); transition: all 0.2s; color: white; }
         .checkbox-input { display: none; }
         .checkbox-input:checked + .checkbox-custom { background: #1a1a1a; border-color: #1a1a1a; }
         .checkbox-input:checked + .checkbox-custom i { opacity: 1; transform: scale(1); }
 
-        /* --- MODALS --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s; display: flex; align-items: center; justify-content: center; }
+        /* --- MODALS (PROPORTIONAL FIXES) --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 2000; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s; display: flex; align-items: center; justify-content: center; }
         .modal-overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
-        .modal { background: rgba(255,255,255,0.98); width: 85%; padding: 30px 25px; border-radius: 30px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.25); transform: scale(0.95) translateY(10px); opacity: 0; transition: all 0.4s var(--ios-bezier); position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal { background: rgba(255,255,255,0.98); width: 88%; padding: 35px 25px; border-radius: 32px; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.2); transform: scale(0.95) translateY(15px); opacity: 0; transition: all 0.4s var(--ios-bezier); position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-overlay.open .modal { transform: scale(1) translateY(0); opacity: 1; }
-        .modal-btn { background: #000; color: white; padding: 14px 30px; border-radius: 30px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: 600; font-size: 15px; width: 100%; border: none; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-        .modal-btn.secondary { background: #0077FF; margin-top: 10px; }
-        .close-modal { margin-top: 20px; display: block; color: #8e8e93; font-size: 14px; cursor: pointer; }
+        .modal-btn { background: #000; color: white; padding: 16px 30px; border-radius: 18px; text-decoration: none; display: inline-block; margin-top: 20px; font-weight: 600; font-size: 16px; width: 100%; border: none; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .modal-btn.secondary { background: #0077FF; margin-top: 12px; }
+        .close-modal { margin-top: 25px; display: block; color: #8e8e93; font-size: 15px; cursor: pointer; font-weight: 500; }
 
-        /* --- DETAILS MODAL SPECIFIC --- */
-        .details-img-slider { width: 100%; height: 280px; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 20px; margin-bottom: 20px; }
-        .details-img-slide { flex: 0 0 100%; scroll-snap-align: center; }
+        /* --- DETAILS MODAL --- */
+        .details-img-slider { width: 100%; height: 300px; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 24px; margin-bottom: 25px; background: #fff; }
+        .details-img-slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; align-items: center; justify-content: center; }
         .details-img-slide img { width: 100%; height: 100%; object-fit: contain; }
         
-        .chips-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; margin-bottom: 15px; }
-        .chip { padding: 8px 16px; border-radius: 12px; background: #f0f0f0; font-size: 13px; font-weight: 600; color: #666; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
-        .chip.active { background: #1a1a1a; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .chips-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start; margin-bottom: 20px; }
+        .chip { padding: 10px 18px; border-radius: 14px; background: #f2f2f7; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .chip.active { background: #1a1a1a; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .action-btn-small { background: white; border: 1px solid #eee; padding: 12px; border-radius: 14px; font-size: 12px; font-weight: 600; color: #333; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .action-btn-small { background: white; border: 1px solid #eee; padding: 14px; border-radius: 16px; font-size: 13px; font-weight: 600; color: #333; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
         
         /* --- TABLE STYLES --- */
-        .size-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        .size-table th, .size-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
+        .size-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        .size-table th, .size-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
         .size-table th { font-weight: 600; color: #888; }
         
         /* --- MENU BTN STYLES --- */
-        .profile-menu { display: flex; flex-direction: column; gap: 12px; }
-        .menu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .menu-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 18px; display: flex; align-items: center; justify-content: space-between; color: #1a1a1a; box-shadow: var(--shadow); transition: transform 0.1s; }
+        .profile-menu { display: flex; flex-direction: column; gap: 14px; }
+        .menu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .menu-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 22px; padding: 20px; display: flex; align-items: center; justify-content: space-between; color: #1a1a1a; box-shadow: var(--shadow); transition: transform 0.1s; }
         .menu-btn:active { transform: scale(0.97); }
-        .menu-btn-left { display: flex; align-items: center; gap: 14px; }
-        .menu-icon-box { width: 24px; display: flex; justify-content: center; align-items: center; }
-        .menu-icon-box i { font-size: 20px; color: #333; }
-        .menu-btn-text { font-size: 14px; font-weight: 600; letter-spacing: -0.2px; }
-        .menu-btn.small { flex-direction: column; justify-content: center; text-align: center; gap: 10px; padding: 20px 10px; }
+        .menu-btn-left { display: flex; align-items: center; gap: 16px; }
+        .menu-icon-box { width: 28px; display: flex; justify-content: center; align-items: center; }
+        .menu-icon-box i { font-size: 22px; color: #333; }
+        .menu-btn-text { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
+        .menu-btn.small { flex-direction: column; justify-content: center; text-align: center; gap: 12px; padding: 22px 12px; }
         .menu-btn.small .menu-icon-box { width: auto; }
         .menu-btn.small .menu-btn-text { font-size: 13px; }
         .menu-btn.contest { background: #1a1a1a; color: white; border: none; justify-content: space-between; align-items: center; }
         .contest-text { display: flex; flex-direction: column; text-align: left; }
-        .contest-title { font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
-        .contest-subtitle { font-size: 11px; opacity: 0.7; font-weight: 500; margin-top: 2px; }
+        .contest-title { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+        .contest-subtitle { font-size: 12px; opacity: 0.7; font-weight: 500; margin-top: 4px; }
         
-        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 30px; display: flex; justify-content: space-between; padding: 16px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); z-index: 1000; }
+        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 30px; display: flex; justify-content: space-between; padding: 18px 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); z-index: 1000; }
         .nav-item { color: #b0b0b0; text-align: center; cursor: pointer; transition: color 0.3s; position: relative; display: flex; align-items: center; justify-content: center; width: 25%; height: 100%; }
-        .nav-item i { font-size: 24px; display: block; transition: transform 0.3s var(--ios-bezier); }
+        .nav-item i { font-size: 26px; display: block; transition: transform 0.3s var(--ios-bezier); }
         .nav-item.active { color: #000; }
-        .nav-item.active i { transform: translateY(-2px) scale(1.1); color: #000 !important; }
-        .cart-badge { position: absolute; top: -5px; right: 15px; background: #ff3b30; color: #fff; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: all 0.3s; border: 2px solid white; }
+        .nav-item.active i { transform: translateY(-3px) scale(1.1); color: #000 !important; }
+        .cart-badge { position: absolute; top: -6px; right: 10px; background: #ff3b30; color: #fff; border-radius: 50%; min-width: 20px; height: 20px; padding: 0 5px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: all 0.3s; border: 2px solid white; }
         .cart-badge.visible { opacity: 1; transform: scale(1); }
     </style>
 </head>
@@ -263,9 +329,9 @@
                     </div>
                     <div class="slide">
                         <div class="slide-content has-btn">
-                            <h3>Раздача в чате</h3>
-                            <p>Ежедневно мы раздаем подарки в нашем чате Telegram.</p>
-                            <a href="https://t.me/furuyumechat" target="_blank" class="slider-btn">Перейти</a>
+                            <h3>Конкурс на 50 000₽</h3>
+                            <p>Участвуй в розыгрыше призов в нашей группе ВК!</p>
+                            <a href="https://vk.com/wall-233057761_3" target="_blank" class="slider-btn">Участвовать</a>
                         </div>
                     </div>
                     <div class="slide">
@@ -283,21 +349,21 @@
                         <div class="home-btn-icon"><i class="fas fa-headset"></i></div>
                         <span class="home-btn-text">Поддержка</span>
                     </div>
-                    <i class="fas fa-chevron-right" style="color: #ccc; font-size: 12px;"></i>
+                    <i class="fas fa-chevron-right" style="color: #ccc; font-size: 14px;"></i>
                 </div>
                 <div class="home-btn" onclick="openModal('how-to-order-modal')">
                     <div class="home-btn-content">
                         <div class="home-btn-icon"><i class="fas fa-info-circle"></i></div>
                         <span class="home-btn-text">Как оформить заказ?</span>
                     </div>
-                    <i class="fas fa-chevron-right" style="color: #ccc; font-size: 12px;"></i>
+                    <i class="fas fa-chevron-right" style="color: #ccc; font-size: 14px;"></i>
                 </div>
                 <div class="home-btn" onclick="switchTab('games', document.getElementById('nav-games'))">
                     <div class="home-btn-content">
                         <div class="home-btn-icon"><i class="fas fa-gift"></i></div>
                         <span class="home-btn-text">Подарок для тебя</span>
                     </div>
-                    <i class="fas fa-chevron-right" style="color: #ccc; font-size: 12px;"></i>
+                    <i class="fas fa-chevron-right" style="color: #ccc; font-size: 14px;"></i>
                 </div>
             </div>
         </div>
@@ -320,9 +386,9 @@
 
         <div id="games" class="page">
             <div class="games-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:60vh; text-align:center; color:#8e8e93;">
-                <i class="fas fa-gamepad games-icon" style="font-size:60px; margin-bottom:20px; opacity:0.3;"></i>
-                <p style="font-size:16px; font-weight:500;">Раздел в разработке</p>
-                <p style="font-size:13px; margin-top:5px;">Скоро здесь появятся мини-игры</p>
+                <i class="fas fa-gamepad games-icon" style="font-size:70px; margin-bottom:25px; opacity:0.3;"></i>
+                <p style="font-size:18px; font-weight:600;">Раздел в разработке</p>
+                <p style="font-size:14px; margin-top:8px;">Скоро здесь появятся мини-игры</p>
             </div>
         </div>
 
@@ -335,14 +401,14 @@
                         <div class="menu-icon-box"><i class="fas fa-star" style="color: #FFD700;"></i></div>
                         <span class="menu-btn-text">ОТЗЫВЫ</span>
                     </div>
-                    <i class="fas fa-chevron-right" style="font-size: 12px; color: #999;"></i>
+                    <i class="fas fa-chevron-right" style="font-size: 14px; color: #999;"></i>
                 </a>
                 <a href="https://t.me/furuyumechat" target="_blank" class="menu-btn">
                     <div class="menu-btn-left">
                         <div class="menu-icon-box"><i class="fas fa-comments"></i></div>
                         <span class="menu-btn-text">НАШ ЧАТ</span>
                     </div>
-                    <i class="fas fa-chevron-right" style="font-size: 12px; color: #999;"></i>
+                    <i class="fas fa-chevron-right" style="font-size: 14px; color: #999;"></i>
                 </a>
                 <div class="menu-row">
                     <a href="https://t.me/furuyumedelivery/7" target="_blank" class="menu-btn small">
@@ -359,27 +425,27 @@
                         <span class="contest-title">КОНКУРС</span>
                         <span class="contest-subtitle">на 50 000 рублей</span>
                     </div>
-                    <i class="fas fa-gift" style="font-size: 24px; opacity: 0.9;"></i>
+                    <i class="fas fa-gift" style="font-size: 28px; opacity: 0.9;"></i>
                 </a>
             </div>
         </div>
 
         <div id="cart-page" class="page">
-            <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                <div onclick="switchTab('catalog', document.getElementById('nav-catalog'))" style="padding: 10px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-arrow-left" style="font-size: 18px;"></i>
-                    <span style="font-weight: 500; font-size: 14px;">Назад в каталог</span>
+            <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                <div onclick="switchTab('catalog', document.getElementById('nav-catalog'))" style="padding: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-arrow-left" style="font-size: 20px;"></i>
+                    <span style="font-weight: 600; font-size: 15px;">Назад в каталог</span>
                 </div>
             </div>
-            <h2 style="margin-bottom: 20px; padding-left: 5px;">Корзина</h2>
+            <h2 style="margin-bottom: 25px; padding-left: 5px;">Корзина</h2>
             <div id="cart-items">
-                <div style="text-align: center; margin-top: 60px; color: #8e8e93;">
-                    <i class="fas fa-shopping-basket" style="font-size: 40px; margin-bottom: 15px; opacity: 0.3;"></i>
-                    <p>Ваша корзина пуста</p>
+                <div style="text-align: center; margin-top: 80px; color: #8e8e93;">
+                    <i class="fas fa-shopping-basket" style="font-size: 50px; margin-bottom: 20px; opacity: 0.3;"></i>
+                    <p style="font-size: 15px;">Ваша корзина пуста</p>
                 </div>
             </div>
             <div id="cart-total-block" class="total-block hidden">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 18px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 20px;">
                     <span>Итого:</span>
                     <span id="total-price" style="font-weight: 700;">0 ₽</span>
                 </div>
@@ -404,16 +470,16 @@
     </div>
 
     <div class="modal-overlay" id="product-details-modal">
-        <div class="modal" style="padding: 20px; text-align: left;">
+        <div class="modal" style="padding: 25px; text-align: left;">
             <div id="details-content"></div>
-            <span class="close-modal" onclick="closeModal('product-details-modal')" style="text-align: center; margin-top: 10px;">Закрыть</span>
+            <span class="close-modal" onclick="closeModal('product-details-modal')" style="text-align: center; margin-top: 15px;">Закрыть</span>
         </div>
     </div>
 
     <div class="modal-overlay" id="size-chart-modal">
         <div class="modal">
             <h3>Размерная сетка</h3>
-            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Поскольку изделия выполнены в оверсайз-крое, для выбора достаточно ориентироваться на рост.</p>
+            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Поскольку изделия выполнены в оверсайз-крое, для выбора достаточно ориентироваться на рост.</p>
             
             <table class="size-table">
                 <thead>
@@ -436,10 +502,10 @@
 
     <div class="modal-overlay" id="real-photos-modal">
         <div class="modal">
-            <h3 style="margin-bottom: 15px;">Живые фото</h3>
+            <h3 style="margin-bottom: 20px;">Живые фото</h3>
             <div class="details-img-slider" id="real-photos-slider">
                 </div>
-            <p style="font-size: 12px; color:#999;">Листайте вправо</p>
+            <p style="font-size: 13px; color:#999; margin-top:10px;">Листайте вправо</p>
             <button class="modal-btn" onclick="closeModal('real-photos-modal'); openModal('product-details-modal')">Назад к товару</button>
         </div>
     </div>
@@ -447,7 +513,7 @@
     <div class="modal-overlay" id="register-modal">
         <div class="modal">
             <h3>Регистрация</h3>
-            <p style="margin-bottom: 20px;">Создайте аккаунт Furuyume</p>
+            <p style="margin-bottom: 25px;">Создайте аккаунт Furuyume</p>
             
             <div id="reg-step-1">
                 <div class="form-group">
@@ -471,10 +537,10 @@
             </div>
 
             <div id="reg-step-2" style="display: none;">
-                <p style="margin-bottom: 15px; color: #1a1a1a;">Мы отправили код подтверждения в наш бот.</p>
+                <p style="margin-bottom: 20px; color: #1a1a1a;">Мы отправили код подтверждения в наш бот.</p>
                 <div class="form-group">
                     <label class="form-label">Введите код</label>
-                    <input type="number" class="form-input" id="reg-code" placeholder="1234" style="text-align: center; letter-spacing: 2px;">
+                    <input type="number" class="form-input" id="reg-code" placeholder="1234" style="text-align: center; letter-spacing: 4px; font-weight: 600;">
                 </div>
                 <button class="modal-btn" onclick="finishRegistration()">Подтвердить</button>
             </div>
@@ -486,7 +552,7 @@
     <div class="modal-overlay" id="login-modal">
         <div class="modal">
             <h3>Вход</h3>
-            <p style="margin-bottom: 20px;">С возвращением!</p>
+            <p style="margin-bottom: 25px;">С возвращением!</p>
             
             <div id="login-step-1">
                 <div class="form-group">
@@ -497,21 +563,21 @@
                     <label class="form-label">Пароль</label>
                     <input type="password" class="form-input" id="login-pass" placeholder="••••••">
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                     <label class="checkbox-container" style="margin-top:0;">
                         <input type="checkbox" class="checkbox-input" id="remember-me">
-                        <div class="checkbox-custom"><i class="fas fa-check" style="font-size: 10px;"></i></div>
+                        <div class="checkbox-custom"><i class="fas fa-check" style="font-size: 12px;"></i></div>
                         <span>Запомнить</span>
                     </label>
-                    <a href="#" onclick="openForgotPass()" style="font-size: 12px; color: #0077FF;">Забыли пароль?</a>
+                    <a href="#" onclick="openForgotPass()" style="font-size: 13px; color: #0077FF; font-weight: 500;">Забыли пароль?</a>
                 </div>
                 <button class="modal-btn" onclick="performLogin()">Войти</button>
             </div>
 
             <div id="login-step-2" style="display: none;">
-                <p style="margin-bottom: 15px;">Введите код из бота для входа</p>
+                <p style="margin-bottom: 20px;">Введите код из бота для входа</p>
                 <div class="form-group">
-                    <input type="number" class="form-input" id="login-code" placeholder="1234" style="text-align: center;">
+                    <input type="number" class="form-input" id="login-code" placeholder="1234" style="text-align: center; letter-spacing: 4px; font-weight: 600;">
                 </div>
                 <button class="modal-btn" onclick="verifyLogin()">Подтвердить</button>
             </div>
@@ -525,7 +591,7 @@
             <h3>Восстановление</h3>
             
             <div id="forgot-step-1">
-                <p style="margin-bottom: 15px;">Введите ваш логин</p>
+                <p style="margin-bottom: 20px;">Введите ваш логин</p>
                 <div class="form-group">
                     <input type="text" class="form-input" id="forgot-login" placeholder="Логин">
                 </div>
@@ -533,10 +599,10 @@
             </div>
 
             <div id="forgot-step-2" style="display: none;">
-                <p style="margin-bottom: 10px;">Код отправлен в бот</p>
+                <p style="margin-bottom: 15px;">Код отправлен в бот</p>
                 <div class="form-group">
                     <label class="form-label">Код</label>
-                    <input type="number" class="form-input" id="reset-code" placeholder="1234" style="text-align: center;">
+                    <input type="number" class="form-input" id="reset-code" placeholder="1234" style="text-align: center; letter-spacing: 4px; font-weight: 600;">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Новый пароль</label>
@@ -555,7 +621,7 @@
 
     <div class="modal-overlay" id="profile-details-modal">
         <div class="modal">
-            <h3 style="margin-bottom: 20px;">Мой профиль</h3>
+            <h3 style="margin-bottom: 25px;">Мой профиль</h3>
             
             <div class="profile-info-row">
                 <span class="profile-info-label">Логин:</span>
@@ -581,10 +647,10 @@
         <div class="modal">
             <h3>Смена пароля</h3>
             <div id="change-pass-step-1">
-                <p style="margin-bottom: 15px;">Мы отправили код подтверждения</p>
+                <p style="margin-bottom: 20px;">Мы отправили код подтверждения</p>
                 <div class="form-group">
                     <label class="form-label">Код из бота</label>
-                    <input type="number" class="form-input" id="change-code" placeholder="1234" style="text-align: center;">
+                    <input type="number" class="form-input" id="change-code" placeholder="1234" style="text-align: center; letter-spacing: 4px; font-weight: 600;">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Новый пароль</label>
@@ -602,9 +668,9 @@
 
     <div class="modal-overlay" id="checkout-modal">
         <div class="modal">
-            <i class="fas fa-check-circle" style="font-size: 50px; margin-bottom: 20px; color: #1a1a1a;"></i>
+            <i class="fas fa-check-circle" style="font-size: 60px; margin-bottom: 25px; color: #1a1a1a;"></i>
             <h3>Готово к заказу</h3>
-            <p style="margin-top: 10px; font-size: 15px;">Отправьте список товаров менеджеру, чтобы завершить покупку.</p>
+            <p style="margin-top: 12px; font-size: 16px;">Отправьте список товаров менеджеру, чтобы завершить покупку.</p>
             <a href="#" id="order-link" target="_blank" class="modal-btn">Написать @furuyumeorders</a>
             <span class="close-modal" onclick="closeModal('checkout-modal')">Вернуться назад</span>
         </div>
@@ -612,9 +678,9 @@
 
     <div class="modal-overlay" id="support-modal">
         <div class="modal">
-            <i class="fas fa-headset" style="font-size: 40px; margin-bottom: 20px; color: #333;"></i>
+            <i class="fas fa-headset" style="font-size: 50px; margin-bottom: 25px; color: #333;"></i>
             <h3>Поддержка</h3>
-            <p style="margin-top: 10px; font-size: 14px; line-height: 1.5;">Если у вас возникли вопросы, нажмите кнопку ниже, чтобы перейти в диалог.</p>
+            <p style="margin-top: 12px; font-size: 15px; line-height: 1.5;">Если у вас возникли вопросы, нажмите кнопку ниже, чтобы перейти в диалог.</p>
             <a href="https://t.me/furuyumemngrs" target="_blank" class="modal-btn">Перейти</a>
             <span class="close-modal" onclick="closeModal('support-modal')">Закрыть</span>
         </div>
@@ -622,9 +688,9 @@
 
     <div class="modal-overlay" id="how-to-order-modal">
         <div class="modal">
-            <i class="fas fa-clipboard-list" style="font-size: 40px; margin-bottom: 20px; color: #333;"></i>
+            <i class="fas fa-clipboard-list" style="font-size: 50px; margin-bottom: 25px; color: #333;"></i>
             <h3>Как заказать?</h3>
-            <p style="margin-top: 10px; font-size: 14px; line-height: 1.5; text-align: left;">
+            <p style="margin-top: 12px; font-size: 15px; line-height: 1.6; text-align: left;">
                 1. Перейдите в раздел <b>Каталог</b>.<br>
                 2. Выберите модель, цвет и размер.<br>
                 3. Добавьте в корзину или нажмите "Заказать".<br>
@@ -737,8 +803,8 @@
         function showNotification(message, type = 'success') {
             const container = document.getElementById('notification-area');
             const toast = document.createElement('div');
-            toast.className = `notification-toast ${type}`;
-            let icon = type === 'error' ? 'fa-exclamation-circle' : type === 'info' ? 'fa-info-circle' : 'fa-check-circle';
+            toast.className = `notification-toast ${type === 'sale' ? 'sale-toast' : type === 'original' ? 'original-toast' : type}`;
+            let icon = type === 'error' ? 'fa-exclamation-circle' : type === 'sale' ? 'fa-fire' : type === 'original' ? 'fa-check' : 'fa-check-circle';
             toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
             container.appendChild(toast);
             requestAnimationFrame(() => { toast.classList.add('visible'); });
@@ -926,13 +992,16 @@
 
             container.innerHTML = filtered.map(p => {
                 let badge = '';
-                if(p.isSale) badge = `<div class="card-badge sale" onclick="event.stopPropagation(); showNotification('Товар на распродаже', 'info')"><i class="fas fa-fire"></i></div>`;
-                if(p.isOriginal) badge = `<div class="card-badge original" onclick="event.stopPropagation(); showNotification('Оригинальный товар', 'success')"><i class="fas fa-check"></i></div>`;
+                if(p.isSale) badge = `<div class="card-badge sale" onclick="event.stopPropagation(); showNotification('Товар на распродаже', 'sale')"><i class="fas fa-fire"></i></div>`;
                 
+                // --- ORIGINAL BADGE LOGIC (TEXT BADGE) ---
+                let originalBadge = '';
+                if(p.isOriginal) originalBadge = `<div class="badge-text-original" onclick="event.stopPropagation(); showNotification('Оригинальный товар', 'original')">ОРИГИНАЛ</div>`;
+
                 return `
                 <div class="product-card">
                     ${badge}
-                    <div class="card-quick-add" onclick="event.stopPropagation(); openDetails(${p.id})"><i class="fas fa-shopping-bag"></i></div>
+                    ${originalBadge}
                     <div class="product-image" onclick="openDetails(${p.id})">
                         <img src="${p.image}" alt="${p.name}">
                     </div>
@@ -942,6 +1011,7 @@
                             <div class="product-price">${p.price} ₽</div>
                             ${p.oldPrice ? `<div class="old-price">${p.oldPrice} ₽</div>` : ''}
                         </div>
+                        <div class="card-quick-add" onclick="event.stopPropagation(); openDetails(${p.id})"><i class="fas fa-plus"></i></div>
                     </div>
                     <button class="add-btn" onclick="openDetails(${p.id})">Подробнее</button>
                 </div>
@@ -988,7 +1058,7 @@
 
                 <p style="margin-top: 20px; font-size: 14px; line-height: 1.5; color: #444;">${p.description}</p>
 
-                <div style="margin-top: 25px; display: grid; gap: 10px;">
+                <div style="margin-top: 8px; display: grid; gap: 1px;">
                     <button class="modal-btn" onclick="addToCartDetail()">Добавить в корзину</button>
                     <button class="modal-btn secondary" onclick="orderNowDetail()">Заказать сейчас</button>
                 </div>
