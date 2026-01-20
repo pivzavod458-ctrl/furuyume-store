@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Furuyume Store</title>
+    <title>FURUYUME STORE</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -329,9 +329,9 @@
                     </div>
                     <div class="slide">
                         <div class="slide-content has-btn">
-                            <h3>Конкурс на 50 000₽</h3>
-                            <p>Участвуй в розыгрыше призов в нашей группе ВК!</p>
-                            <a href="https://vk.com/wall-233057761_3" target="_blank" class="slider-btn">Участвовать</a>
+                            <h3>Раздача в чате</h3>
+                            <p>Ежедневно мы раздаем подарки в нашем чате Telegram.</p>
+                            <a href="https://t.me/furuyumechat" target="_blank" class="slider-btn">Участвовать</a>
                         </div>
                     </div>
                     <div class="slide">
@@ -396,7 +396,7 @@
             <div id="profile-content"></div>
 
             <div class="profile-menu">
-                <a href="https://vk.com/furuyume" target="_blank" class="menu-btn">
+                <a href="https://t.me/furuyumedelivery/9" target="_blank" class="menu-btn">
                     <div class="menu-btn-left">
                         <div class="menu-icon-box"><i class="fas fa-star" style="color: #FFD700;"></i></div>
                         <span class="menu-btn-text">ОТЗЫВЫ</span>
@@ -420,10 +420,10 @@
                         <span class="menu-btn-text">УСЛОВИЯ</span>
                     </a>
                 </div>
-                <a href="https://vk.com/wall-233057761_3" target="_blank" class="menu-btn contest">
+                <a href="https://t.me/furuyumechat" target="_blank" class="menu-btn contest">
                     <div class="contest-text">
-                        <span class="contest-title">КОНКУРС</span>
-                        <span class="contest-subtitle">на 50 000 рублей</span>
+                        <span class="contest-title">ПОДАРКИ</span>
+                        <span class="contest-subtitle">каждый день за пару легких действий</span>
                     </div>
                     <i class="fas fa-gift" style="font-size: 28px; opacity: 0.9;"></i>
                 </a>
@@ -513,12 +513,12 @@
     <div class="modal-overlay" id="register-modal">
         <div class="modal">
             <h3>Регистрация</h3>
-            <p style="margin-bottom: 25px;">Создайте аккаунт Furuyume</p>
+            <p style="margin-bottom: 25px;">Создайте аккаунт</p>
             
             <div id="reg-step-1">
                 <div class="form-group">
-                    <label class="form-label">Логин (4-12 симв., только латиница)</label>
-                    <input type="text" class="form-input" id="reg-login" maxlength="12" placeholder="Например: sasha_pro">
+                    <label class="form-label">Логин</label>
+                    <input type="text" class="form-input" id="reg-login" maxlength="12" placeholder="Придумайте логин">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Пароль</label>
@@ -531,7 +531,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Повторите пароль</label>
-                    <input type="password" class="form-input" id="reg-pass-repeat" placeholder="Повторите">
+                    <input type="password" class="form-input" id="reg-pass-repeat" placeholder="Повторите пароль">
                 </div>
                 <button class="modal-btn" onclick="regNextStep()">Продолжить</button>
             </div>
@@ -567,7 +567,7 @@
                     <label class="checkbox-container" style="margin-top:0;">
                         <input type="checkbox" class="checkbox-input" id="remember-me">
                         <div class="checkbox-custom"><i class="fas fa-check" style="font-size: 12px;"></i></div>
-                        <span>Запомнить</span>
+                        <span>Запомнить меня</span>
                     </label>
                     <a href="#" onclick="openForgotPass()" style="font-size: 13px; color: #0077FF; font-weight: 500;">Забыли пароль?</a>
                 </div>
@@ -606,10 +606,10 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Новый пароль</label>
-                    <input type="password" class="form-input" id="reset-new-pass" placeholder="Придумайте новый">
+                    <input type="password" class="form-input" id="reset-new-pass" placeholder="">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Повторите</label>
+                    <label class="form-label">Повторите пароль</label>
                     <input type="password" class="form-input" id="reset-new-pass-rep">
                 </div>
                 <button class="modal-btn" onclick="finishResetPass()">Сменить пароль</button>
@@ -654,10 +654,10 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Новый пароль</label>
-                    <input type="password" class="form-input" id="change-new-pass" placeholder="Придумайте новый">
+                    <input type="password" class="form-input" id="change-new-pass" placeholder="">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Повторите</label>
+                    <label class="form-label">Повторите пароль</label>
                     <input type="password" class="form-input" id="change-new-pass-rep">
                 </div>
                 <button class="modal-btn" onclick="submitProfilePassChange()">Сменить</button>
@@ -723,24 +723,24 @@
                 id: 1, 
                 name: "Adidas Japan track jacket", 
                 category: "olympiyka", 
-                price: 7600, 
+                price: 4200, 
                 oldPrice: 11800, 
                 image: "japan.png",
                 isSale: true,
                 sizes: ['S', 'M'],
-                description: "Культовая олимпийка Adidas Japan. Винтажный стиль, высокое качество материалов. Идеально подходит для повседневной носки.",
+                description: "Самая редкая олимпийка от Адидас с пометкой винтаж. Лучшая реплика на рынке.",
                 realPhotos: ['real_japan_1.jpg', 'real_japan_2.jpg', 'real_japan_3.jpg', 'real_japan_4.jpg', 'real_japan_5.jpg']
             },
             { 
                 id: 2, 
                 name: "Adidas x Yohji Yamamoto", 
                 category: "olympiyka", 
-                price: 7200, 
+                price: 4200, 
                 oldPrice: 13400, 
                 image: "yamamoto.png",
                 isSale: true,
                 sizes: ['S', 'M', 'L', 'XL'],
-                description: "Эксклюзивная коллаборация Adidas и Yohji Yamamoto. Уникальный дизайн, оверсайз крой.",
+                description: "Эксклюзивная коллаборация Adidas и Yohji Yamamoto. Лучшая реплика на рынке.",
                 colors: [
                     { name: "Белая с бирюзовым", image: "yamamoto_white_turq.png", id: "yama_1" },
                     { name: "Белая с черным", image: "yamamoto_white_black.png", id: "yama_2" }
@@ -755,7 +755,7 @@
                 isOriginal: true,
                 image: "china.png",
                 sizes: ['S', 'M', 'L', 'XL'],
-                description: "Оригинальная олимпийка из китайской коллекции Adidas. Яркие цвета, классический крой.",
+                description: "Оригинальная олимпийка из китайской коллекции Adidas. Яркие цвета, оверсайз крой.",
                 colors: [
                     { name: "Белый", image: "china_white.png", id: "chi_1" },
                     { name: "Синий", image: "china_blue.png", id: "chi_2" },
@@ -772,7 +772,7 @@
                 oldPrice: 20500, 
                 image: "vetements.png",
                 sizes: ['S', 'M', 'L', 'XL'],
-                description: "Бомбер VETEMENTS в цвете Maroon. Тяжелый люкс, премиум качество, оверсайз фит.",
+                description: "Бомбер VETEMENTS. Тяжелый люкс, премиум качество. Лучшая реплика на рынке.",
                 realPhotos: ['real_vetements_1.jpg', 'real_vetements_2.jpg', 'real_vetements_3.jpg', 'real_vetements_4.jpg', 'real_vetements_5.jpg']
             }
         ];
