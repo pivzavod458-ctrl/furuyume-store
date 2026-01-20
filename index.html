@@ -13,14 +13,16 @@
             --bg-gradient: linear-gradient(135deg, #f6f7f9 0%, #e3e6eb 100%);
             --text-color: #1a1a1a;
             --secondary-text: #8e8e93;
-            --glass-bg: rgba(255, 255, 255, 0.90);
+            --glass-bg: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(255, 255, 255, 0.8);
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.03); 
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.04); 
             --ios-bezier: cubic-bezier(0.25, 0.1, 0.25, 1);
             --accent-black: #1a1a1a;
             --error-color: #ff3b30;
             --success-color: #34c759;
             --warn-color: #FFD700;
+            --sale-color: #ff3b30;
+            --blue-link: #0077FF;
         }
 
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; outline: none; }
@@ -42,15 +44,13 @@
         p { margin: 0; color: var(--secondary-text); }
         a { text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
-        /* --- REMOVE ARROWS FROM NUMBER INPUTS --- */
+        /* REMOVE ARROWS FROM NUMBER INPUTS */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; 
             margin: 0; 
         }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+        input[type=number] { -moz-appearance: textfield; }
 
         /* --- NOTIFICATIONS --- */
         #notification-area {
@@ -59,7 +59,7 @@
             z-index: 3000; pointer-events: none;
         }
         .notification-toast {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             padding: 12px 20px;
             border-radius: 25px;
@@ -68,23 +68,18 @@
             transform: translateY(-50px); opacity: 0;
             transition: all 0.4s var(--ios-bezier);
             font-size: 13px; font-weight: 600; color: #000;
-            border: 1px solid rgba(255,255,255,0.5);
+            border: 1px solid rgba(0,0,0,0.05);
         }
         .notification-toast.visible { transform: translateY(0); opacity: 1; }
         .notification-toast i { font-size: 16px; }
         .notification-toast.success i { color: var(--success-color); }
         .notification-toast.error i { color: var(--error-color); }
+        .notification-toast.info i { color: var(--blue-link); }
 
-        /* --- PASSWORD STRENGTH BARS --- */
-        .strength-meter {
-            display: flex; gap: 5px; margin-top: 8px; height: 4px;
-            opacity: 0; transition: opacity 0.3s;
-        }
+        /* --- PASSWORD STRENGTH --- */
+        .strength-meter { display: flex; gap: 5px; margin-top: 8px; height: 4px; opacity: 0; transition: opacity 0.3s; }
         .strength-meter.visible { opacity: 1; }
-        .strength-bar {
-            flex: 1; background: #e0e0e0; border-radius: 2px;
-            transition: background-color 0.3s ease;
-        }
+        .strength-bar { flex: 1; background: #e0e0e0; border-radius: 2px; transition: background-color 0.3s ease; }
         .strength-weak .bar-1 { background-color: var(--error-color); }
         .strength-medium .bar-1, .strength-medium .bar-2 { background-color: var(--warn-color); }
         .strength-strong .bar-1, .strength-strong .bar-2, .strength-strong .bar-3 { background-color: var(--success-color); }
@@ -97,11 +92,7 @@
             justify-content: center; align-items: center;
             transition: opacity 0.5s ease;
         }
-        .spinner {
-            width: 40px; height: 40px;
-            border: 3px solid #ddd; border-top: 3px solid #000;
-            border-radius: 50%; animation: spin 0.8s linear infinite;
-        }
+        .spinner { width: 40px; height: 40px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
         .loading-text { margin-top: 15px; font-size: 13px; font-weight: 500; color: #888; animation: pulse 1.5s infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
@@ -140,16 +131,24 @@
         /* --- PRODUCTS --- */
         .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .product-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; position: relative; }
-        .product-card:active { transform: scale(0.97); transition: 0.2s; }
+        .product-card:active { transform: scale(0.98); transition: 0.2s; }
         .product-image { width: 100%; aspect-ratio: 1/1; border-radius: 16px; margin-bottom: 12px; overflow: hidden; position: relative; background: transparent; }
         .product-image img { width: 100%; height: 100%; object-fit: cover; }
-        .badge-original { position: absolute; top: 5px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: white; font-size: 8px; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; z-index: 2; letter-spacing: 0.5px; }
+        
+        /* NEW BADGES */
+        .card-badge { position: absolute; top: 10px; left: 10px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.15); cursor: pointer; transition: transform 0.2s; }
+        .card-badge:active { transform: scale(0.9); }
+        .card-badge.sale { background: var(--sale-color); color: white; }
+        .card-badge.original { background: white; color: var(--success-color); border: 1px solid #eee; }
+        
+        .card-quick-add { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #1a1a1a; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; backdrop-filter: blur(4px); }
+        .card-quick-add:active { transform: scale(0.9); background: #1a1a1a; color: white; }
+
         .product-title { font-size: 13px; font-weight: 600; line-height: 1.3; margin-bottom: 6px; flex-grow: 1; color: #000; }
         .price-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 12px; }
         .price-container { display: flex; flex-direction: column; align-items: flex-start; }
         .product-price { font-size: 15px; font-weight: 700; color: #000; }
         .old-price { font-size: 11px; color: #8e8e93; text-decoration: line-through; margin-left: 2px; }
-        .color-select-btn { background: rgba(0,0,0,0.05); color: #333; font-size: 10px; font-weight: 600; padding: 5px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px; height: 26px; }
         .add-btn { width: 100%; padding: 12px 0; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
 
         /* --- CART --- */
@@ -158,106 +157,65 @@
         .cart-item-img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; margin-right: 12px; }
         .cart-item-details { display: flex; flex-direction: column; }
         .cart-item-name { font-weight: 600; font-size: 13px; }
-        .cart-item-color { font-size: 11px; color: #888; }
-        .cart-item-price { font-size: 12px; color: #000; }
+        .cart-item-info { font-size: 11px; color: #888; }
+        .cart-item-price { font-size: 12px; color: #000; font-weight: 600; margin-top: 2px;}
         .total-block { margin-top: 25px; padding: 24px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); text-align: center; transition: all 0.4s; }
         .total-block.hidden { opacity: 0; transform: translateY(20px); max-height: 0; margin: 0; padding: 0; }
         .checkout-btn { background: #000; color: white; width: 100%; padding: 16px; border-radius: 16px; font-size: 16px; font-weight: 600; margin-top: 15px; border: none; cursor: pointer; }
 
         /* --- AUTH & PROFILE --- */
-        .profile-header-container {
-            background: var(--glass-bg); border-radius: 24px; padding: 30px 20px; text-align: center;
-            border: 1px solid var(--glass-border); margin-bottom: 25px; box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-        .profile-avatar {
-            width: 80px; height: 80px; background: #1a1a1a; border-radius: 50%; margin: 0 auto 15px;
-            display: flex; align-items: center; justify-content: center; color: white; font-size: 32px;
-        }
+        .profile-header-container { background: var(--glass-bg); border-radius: 24px; padding: 30px 20px; text-align: center; border: 1px solid var(--glass-border); margin-bottom: 25px; box-shadow: var(--shadow); transition: all 0.3s ease; }
+        .profile-avatar { width: 80px; height: 80px; background: #1a1a1a; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; }
         .auth-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-        .auth-btn {
-            padding: 14px; border-radius: 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: none;
-            transition: transform 0.1s; width: 100%;
-        }
+        .auth-btn { padding: 14px; border-radius: 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: transform 0.1s; width: 100%; }
         .auth-btn.login { background: #1a1a1a; color: white; }
         .auth-btn.register { background: white; color: #1a1a1a; border: 1px solid rgba(0,0,0,0.1); }
         .auth-btn:active { transform: scale(0.96); }
-
-        .profile-info-row {
-            display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 14px;
-        }
+        .profile-info-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 14px; }
         .profile-info-label { color: #8e8e93; font-weight: 500; }
         .profile-info-value { font-weight: 600; color: #1a1a1a; }
         .fc-badge { background: #FFD700; color: #000; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-left: 5px; }
-
-        .profile-action-btn {
-            margin-top: 15px; background: rgba(0,0,0,0.03); color: #1a1a1a; width: 100%; padding: 12px;
-            border-radius: 14px; border: none; font-weight: 600; font-size: 13px; cursor: pointer;
-        }
+        .profile-action-btn { margin-top: 15px; background: rgba(0,0,0,0.03); color: #1a1a1a; width: 100%; padding: 12px; border-radius: 14px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; }
 
         /* --- FORM INPUTS --- */
         .form-group { margin-bottom: 15px; text-align: left; }
         .form-label { display: block; font-size: 12px; color: #666; margin-bottom: 6px; font-weight: 500; padding-left: 5px; }
-        .form-input {
-            width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.1);
-            background: #f9f9f9; font-size: 15px; transition: border 0.2s; -webkit-appearance: none;
-        }
+        .form-input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.1); background: #f9f9f9; font-size: 15px; transition: border 0.2s; -webkit-appearance: none; }
         .form-input:focus { border-color: #1a1a1a; background: #fff; }
         
-        /* FIX: Checkbox Logic */
         .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; cursor: pointer; }
-        .checkbox-custom {
-            width: 20px; height: 20px; border-radius: 6px; border: 1px solid #ccc; display: flex;
-            align-items: center; justify-content: center; background: white; transition: all 0.2s;
-        }
+        .checkbox-custom { width: 20px; height: 20px; border-radius: 6px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; background: white; transition: all 0.2s; }
         .checkbox-custom i { opacity: 0; transform: scale(0.5); transition: all 0.2s; color: white; }
         .checkbox-input { display: none; }
         .checkbox-input:checked + .checkbox-custom { background: #1a1a1a; border-color: #1a1a1a; }
         .checkbox-input:checked + .checkbox-custom i { opacity: 1; transform: scale(1); }
 
-        /* FIX: Color Buttons */
-        .color-option-btn {
-            display: flex; align-items: center; justify-content: space-between;
-            width: 100%; background: var(--glass-bg); padding: 14px 16px; margin-bottom: 8px;
-            border-radius: 16px; text-align: left; font-weight: 600; font-size: 14px;
-            border: 1px solid var(--glass-border); cursor: pointer; box-shadow: var(--shadow);
-            color: #1a1a1a; transition: transform 0.1s;
-        }
-        .color-option-btn:active { transform: scale(0.98); }
-        .color-option-btn i { color: #ccc; font-size: 12px; }
-
         /* --- MODALS --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000;
-            opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s; display: flex; align-items: center; justify-content: center; }
         .modal-overlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
-        .modal {
-            background: rgba(255,255,255,0.98); width: 85%; padding: 30px 25px; border-radius: 30px;
-            text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.25); transform: scale(0.95) translateY(10px);
-            opacity: 0; transition: all 0.4s var(--ios-bezier); position: relative;
-        }
+        .modal { background: rgba(255,255,255,0.98); width: 85%; padding: 30px 25px; border-radius: 30px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.25); transform: scale(0.95) translateY(10px); opacity: 0; transition: all 0.4s var(--ios-bezier); position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-overlay.open .modal { transform: scale(1) translateY(0); opacity: 1; }
         .modal-btn { background: #000; color: white; padding: 14px 30px; border-radius: 30px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: 600; font-size: 15px; width: 100%; border: none; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
         .modal-btn.secondary { background: #0077FF; margin-top: 10px; }
         .close-modal { margin-top: 20px; display: block; color: #8e8e93; font-size: 14px; cursor: pointer; }
 
-        /* --- BOTTOM NAV --- */
-        .bottom-nav {
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 30px; display: flex; justify-content: space-between;
-            padding: 16px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); z-index: 1000;
-        }
-        .nav-item { color: #b0b0b0; text-align: center; cursor: pointer; transition: color 0.3s; position: relative; display: flex; align-items: center; justify-content: center; width: 25%; height: 100%; }
-        .nav-item i { font-size: 24px; display: block; transition: transform 0.3s var(--ios-bezier); }
-        .nav-item.active { color: #000; }
-        .nav-item.active i { transform: translateY(-2px) scale(1.1); color: #000 !important; }
-        .cart-badge { position: absolute; top: -5px; right: 15px; background: #ff3b30; color: #fff; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: all 0.3s; border: 2px solid white; }
-        .cart-badge.visible { opacity: 1; transform: scale(1); }
-
+        /* --- DETAILS MODAL SPECIFIC --- */
+        .details-img-slider { width: 100%; height: 280px; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 20px; margin-bottom: 20px; }
+        .details-img-slide { flex: 0 0 100%; scroll-snap-align: center; }
+        .details-img-slide img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .chips-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; margin-bottom: 15px; }
+        .chip { padding: 8px 16px; border-radius: 12px; background: #f0f0f0; font-size: 13px; font-weight: 600; color: #666; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .chip.active { background: #1a1a1a; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .action-btn-small { background: white; border: 1px solid #eee; padding: 12px; border-radius: 14px; font-size: 12px; font-weight: 600; color: #333; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        
+        /* --- TABLE STYLES --- */
+        .size-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        .size-table th, .size-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
+        .size-table th { font-weight: 600; color: #888; }
+        
         /* --- MENU BTN STYLES --- */
         .profile-menu { display: flex; flex-direction: column; gap: 12px; }
         .menu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -275,10 +233,13 @@
         .contest-title { font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
         .contest-subtitle { font-size: 11px; opacity: 0.7; font-weight: 500; margin-top: 2px; }
         
-        .gallery-container { width: 100%; height: 250px; overflow: hidden; border-radius: 20px; margin-bottom: 20px; position: relative; background: transparent; }
-        .gallery-wrapper { display: flex; width: 100%; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-        .gallery-slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; align-items: center; justify-content: center; }
-        .gallery-slide img { width: 100%; height: 100%; object-fit: contain; }
+        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 30px; display: flex; justify-content: space-between; padding: 16px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav-item { color: #b0b0b0; text-align: center; cursor: pointer; transition: color 0.3s; position: relative; display: flex; align-items: center; justify-content: center; width: 25%; height: 100%; }
+        .nav-item i { font-size: 24px; display: block; transition: transform 0.3s var(--ios-bezier); }
+        .nav-item.active { color: #000; }
+        .nav-item.active i { transform: translateY(-2px) scale(1.1); color: #000 !important; }
+        .cart-badge { position: absolute; top: -5px; right: 15px; background: #ff3b30; color: #fff; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: all 0.3s; border: 2px solid white; }
+        .cart-badge.visible { opacity: 1; transform: scale(1); }
     </style>
 </head>
 <body>
@@ -302,9 +263,9 @@
                     </div>
                     <div class="slide">
                         <div class="slide-content has-btn">
-                            <h3>Конкурс на 50 000₽</h3>
-                            <p>Участвуй в розыгрыше призов в нашей группе ВК!</p>
-                            <a href="https://vk.com/wall-233057761_3" target="_blank" class="slider-btn">Участвовать</a>
+                            <h3>Раздача в чате</h3>
+                            <p>Ежедневно мы раздаем подарки в нашем чате Telegram.</p>
+                            <a href="https://t.me/furuyumechat" target="_blank" class="slider-btn">Перейти</a>
                         </div>
                     </div>
                     <div class="slide">
@@ -439,6 +400,47 @@
             <div class="nav-item" onclick="switchTab('profile', this)">
                 <i class="fas fa-user"></i>
             </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="product-details-modal">
+        <div class="modal" style="padding: 20px; text-align: left;">
+            <div id="details-content"></div>
+            <span class="close-modal" onclick="closeModal('product-details-modal')" style="text-align: center; margin-top: 10px;">Закрыть</span>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="size-chart-modal">
+        <div class="modal">
+            <h3>Размерная сетка</h3>
+            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Поскольку изделия выполнены в оверсайз-крое, для выбора достаточно ориентироваться на рост.</p>
+            
+            <table class="size-table">
+                <thead>
+                    <tr>
+                        <th>Размер</th>
+                        <th>Рост (см)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>S</td><td>160 - 170</td></tr>
+                    <tr><td>M</td><td>170 - 180</td></tr>
+                    <tr><td>L</td><td>180 - 185</td></tr>
+                    <tr><td>XL</td><td>185 - 195</td></tr>
+                </tbody>
+            </table>
+
+            <button class="modal-btn" onclick="closeModal('size-chart-modal'); openModal('product-details-modal')">Назад к товару</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="real-photos-modal">
+        <div class="modal">
+            <h3 style="margin-bottom: 15px;">Живые фото</h3>
+            <div class="details-img-slider" id="real-photos-slider">
+                </div>
+            <p style="font-size: 12px; color:#999;">Листайте вправо</p>
+            <button class="modal-btn" onclick="closeModal('real-photos-modal'); openModal('product-details-modal')">Назад к товару</button>
         </div>
     </div>
 
@@ -578,7 +580,6 @@
     <div class="modal-overlay" id="change-pass-modal">
         <div class="modal">
             <h3>Смена пароля</h3>
-            
             <div id="change-pass-step-1">
                 <p style="margin-bottom: 15px;">Мы отправили код подтверждения</p>
                 <div class="form-group">
@@ -593,10 +594,8 @@
                     <label class="form-label">Повторите</label>
                     <input type="password" class="form-input" id="change-new-pass-rep">
                 </div>
-                
                 <button class="modal-btn" onclick="submitProfilePassChange()">Сменить</button>
             </div>
-
             <span class="close-modal" onclick="closeModal('change-pass-modal')">Отмена</span>
         </div>
     </div>
@@ -615,9 +614,7 @@
         <div class="modal">
             <i class="fas fa-headset" style="font-size: 40px; margin-bottom: 20px; color: #333;"></i>
             <h3>Поддержка</h3>
-            <p style="margin-top: 10px; font-size: 14px; line-height: 1.5;">
-                Если у вас возникли вопросы, нажмите кнопку ниже, чтобы перейти в диалог с менеджером.
-            </p>
+            <p style="margin-top: 10px; font-size: 14px; line-height: 1.5;">Если у вас возникли вопросы, нажмите кнопку ниже, чтобы перейти в диалог.</p>
             <a href="https://t.me/furuyumemngrs" target="_blank" class="modal-btn">Перейти</a>
             <span class="close-modal" onclick="closeModal('support-modal')">Закрыть</span>
         </div>
@@ -629,40 +626,18 @@
             <h3>Как заказать?</h3>
             <p style="margin-top: 10px; font-size: 14px; line-height: 1.5; text-align: left;">
                 1. Перейдите в раздел <b>Каталог</b>.<br>
-                2. Выберите интересующую модель и цвет.<br>
-                3. Добавьте в корзину и нажмите "Оформить".<br>
-                4. Вас переведет в диалог с менеджером для уточнения деталей.
+                2. Выберите модель, цвет и размер.<br>
+                3. Добавьте в корзину или нажмите "Заказать".<br>
             </p>
             <button class="modal-btn" onclick="closeModal('how-to-order-modal'); switchTab('catalog', document.getElementById('nav-catalog'));">Перейти в Каталог</button>
             <span class="close-modal" onclick="closeModal('how-to-order-modal')">Закрыть</span>
         </div>
     </div>
 
-    <div class="modal-overlay" id="color-select-modal">
-        <div class="modal">
-            <h3 style="margin-bottom: 15px;">Выберите цвет</h3>
-            <div id="color-options-container"></div>
-            <span class="close-modal" onclick="closeModal('color-select-modal')">Закрыть</span>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="gallery-modal">
-        <div class="modal">
-            <h3 id="gallery-title" style="margin-bottom: 10px; font-size: 16px;">Просмотр</h3>
-            <div class="gallery-container">
-                <div class="gallery-wrapper" id="gallery-wrapper"></div>
-            </div>
-            <button id="gallery-add-btn" class="modal-btn">В корзину</button>
-            <span class="close-modal" onclick="closeModal('gallery-modal')">Назад к выбору</span>
-        </div>
-    </div>
-
     <div class="modal-overlay" id="product-info-modal">
         <div class="modal">
             <h3 id="info-modal-title" style="margin-bottom: 15px;">Товар</h3>
-            <p style="font-size: 15px; color: #444; line-height: 1.5;">
-                Подробную информацию о товаре вы можете уточнить напрямую у менеджера.
-            </p>
+            <p style="font-size: 15px; color: #444; line-height: 1.5;">Подробную информацию о товаре вы можете уточнить у менеджера.</p>
             <a href="https://t.me/furuyumeorders" target="_blank" class="modal-btn">Написать @furuyumeorders</a>
             <span class="close-modal" onclick="closeModal('product-info-modal')">Закрыть</span>
         </div>
@@ -676,83 +651,110 @@
 
         const BACKEND_URL = "https://furuyume.online/api";
 
-        // --- VALIDATION UTILS ---
+        // DATA: Products with full info
+        const products = [
+            { 
+                id: 1, 
+                name: "Adidas Japan track jacket", 
+                category: "olympiyka", 
+                price: 7600, 
+                oldPrice: 11800, 
+                image: "japan.png",
+                isSale: true,
+                sizes: ['S', 'M'],
+                description: "Культовая олимпийка Adidas Japan. Винтажный стиль, высокое качество материалов. Идеально подходит для повседневной носки.",
+                realPhotos: ['real_japan_1.jpg', 'real_japan_2.jpg', 'real_japan_3.jpg', 'real_japan_4.jpg', 'real_japan_5.jpg']
+            },
+            { 
+                id: 2, 
+                name: "Adidas x Yohji Yamamoto", 
+                category: "olympiyka", 
+                price: 7200, 
+                oldPrice: 13400, 
+                image: "yamamoto.png",
+                isSale: true,
+                sizes: ['S', 'M', 'L', 'XL'],
+                description: "Эксклюзивная коллаборация Adidas и Yohji Yamamoto. Уникальный дизайн, оверсайз крой.",
+                colors: [
+                    { name: "Белая с бирюзовым", image: "yamamoto_white_turq.png", id: "yama_1" },
+                    { name: "Белая с черным", image: "yamamoto_white_black.png", id: "yama_2" }
+                ],
+                realPhotos: ['real_yamamoto_1.jpg', 'real_yamamoto_2.jpg', 'real_yamamoto_3.jpg', 'real_yamamoto_4.jpg', 'real_yamamoto_5.jpg']
+            },
+            { 
+                id: 3, 
+                name: "Adidas Chinese jacket", 
+                category: "olympiyka", 
+                price: 5700, 
+                isOriginal: true,
+                image: "china.png",
+                sizes: ['S', 'M', 'L', 'XL'],
+                description: "Оригинальная олимпийка из китайской коллекции Adidas. Яркие цвета, классический крой.",
+                colors: [
+                    { name: "Белый", image: "china_white.png", id: "chi_1" },
+                    { name: "Синий", image: "china_blue.png", id: "chi_2" },
+                    { name: "Желтый", image: "china_yellow.png", id: "chi_3" },
+                    { name: "Красный", image: "china_red.png", id: "chi_4" }
+                ],
+                realPhotos: ['real_china_1.jpg', 'real_china_2.jpg', 'real_china_3.jpg', 'real_china_4.jpg', 'real_china_5.jpg']
+            },
+            { 
+                id: 4, 
+                name: "VETEMENTS maroon bomber", 
+                category: "bomber", 
+                price: 13200, 
+                oldPrice: 20500, 
+                image: "vetements.png",
+                sizes: ['S', 'M', 'L', 'XL'],
+                description: "Бомбер VETEMENTS в цвете Maroon. Тяжелый люкс, премиум качество, оверсайз фит.",
+                realPhotos: ['real_vetements_1.jpg', 'real_vetements_2.jpg', 'real_vetements_3.jpg', 'real_vetements_4.jpg', 'real_vetements_5.jpg']
+            }
+        ];
+
+        // --- AUTH LOGIC ---
         function validateInput(text, type) {
-            if (type === 'login') {
-                // 4-12 chars, letters & numbers ONLY (no cyrillic, no spaces)
-                const regex = /^[a-zA-Z0-9]{4,12}$/;
-                return regex.test(text);
-            }
-            // PASSWORD: Just check if not empty (visual check handles colors)
-            if (type === 'password') {
-                return text.length > 0;
-            }
+            if (type === 'login') return /^[a-zA-Z0-9]{4,12}$/.test(text);
+            if (type === 'password') return text.length > 0;
             return false;
         }
 
-        // --- VISUAL PASSWORD STRENGTH ---
         function checkPassStrength(password) {
             const meter = document.getElementById('pass-strength');
-            const bars = meter.querySelectorAll('.strength-bar');
-            
-            if (password.length === 0) {
-                meter.classList.remove('visible');
-                meter.className = 'strength-meter'; // reset classes
-                return;
-            }
-            
+            if (password.length === 0) { meter.classList.remove('visible'); return; }
             meter.classList.add('visible');
-            meter.className = 'strength-meter visible'; // reset base
-
-            // Simple logic for colors
             let score = 0;
             if (password.length > 4) score++;
             if (password.length > 8) score++;
             if (/[0-9]/.test(password) && /[a-zA-Z]/.test(password)) score++;
-
-            if (score <= 1) meter.classList.add('strength-weak');
-            else if (score === 2) meter.classList.add('strength-medium');
-            else meter.classList.add('strength-strong');
+            meter.className = 'strength-meter visible ' + (score <= 1 ? 'strength-weak' : score === 2 ? 'strength-medium' : 'strength-strong');
         }
 
-        // Attach listener
         document.addEventListener('DOMContentLoaded', () => {
             const regPassInput = document.getElementById('reg-pass');
-            if(regPassInput) {
-                regPassInput.addEventListener('input', (e) => checkPassStrength(e.target.value));
-            }
+            if(regPassInput) regPassInput.addEventListener('input', (e) => checkPassStrength(e.target.value));
         });
-
 
         function showNotification(message, type = 'success') {
             const container = document.getElementById('notification-area');
             const toast = document.createElement('div');
             toast.className = `notification-toast ${type}`;
-            let icon = 'fa-check-circle';
-            if (type === 'error') icon = 'fa-exclamation-circle';
+            let icon = type === 'error' ? 'fa-exclamation-circle' : type === 'info' ? 'fa-info-circle' : 'fa-check-circle';
             toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
             container.appendChild(toast);
             requestAnimationFrame(() => { toast.classList.add('visible'); });
-            setTimeout(() => {
-                toast.classList.remove('visible');
-                setTimeout(() => { toast.remove(); }, 400);
-            }, 3000);
-            if(tg.HapticFeedback) {
-                if(type === 'error') tg.HapticFeedback.notificationOccurred('error');
-                else tg.HapticFeedback.notificationOccurred('success');
-            }
+            setTimeout(() => { toast.classList.remove('visible'); setTimeout(() => toast.remove(), 400); }, 3000);
+            if(tg.HapticFeedback) type === 'error' ? tg.HapticFeedback.notificationOccurred('error') : tg.HapticFeedback.notificationOccurred('success');
         }
 
         let currentUser = null; 
+        let tempRegData = {};
+        let tempLoginData = {};
 
         function checkAuth() {
-            const remembered = localStorage.getItem('furuyume_user_data');
-            if (remembered) {
-                currentUser = JSON.parse(remembered);
-            } else {
-                const sessionUser = sessionStorage.getItem('furuyume_user_data');
-                if (sessionUser) currentUser = JSON.parse(sessionUser);
-            }
+            const r = localStorage.getItem('furuyume_user_data');
+            const s = sessionStorage.getItem('furuyume_user_data');
+            if (r) currentUser = JSON.parse(r);
+            else if (s) currentUser = JSON.parse(s);
             renderProfile();
         }
 
@@ -765,8 +767,7 @@
                         <h3 style="margin-bottom: 5px;">${currentUser.login}</h3>
                         <p style="font-size: 13px; margin-bottom: 15px;">Профиль</p>
                         <button class="modal-btn" style="margin-top:0;" onclick="openModal('profile-details-modal')">Открыть профиль</button>
-                    </div>
-                `;
+                    </div>`;
                 document.getElementById('details-login').innerText = currentUser.login;
                 document.getElementById('details-fc').innerHTML = `${currentUser.fc} <span class="fc-badge">FC</span>`;
                 document.getElementById('details-tg-id').innerText = currentUser.tg_id || "Скрыт";
@@ -780,336 +781,134 @@
                             <button class="auth-btn login" onclick="openModal('login-modal')">Войти</button>
                             <button class="auth-btn register" onclick="openModal('register-modal')">Регистрация</button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }
         }
-
-        let tempRegData = {};
-        let tempLoginData = {};
 
         async function regNextStep() {
             const login = document.getElementById('reg-login').value;
             const pass = document.getElementById('reg-pass').value;
             const passRep = document.getElementById('reg-pass-repeat').value;
-
-            // VALIDATION
-            if (!validateInput(login, 'login')) return showNotification('Логин: 4-12 латинских букв/цифр', 'error');
+            if (!validateInput(login, 'login')) return showNotification('Логин: 4-12 лат. букв/цифр', 'error');
             if (pass.length < 1) return showNotification('Введите пароль', 'error');
             if (pass !== passRep) return showNotification('Пароли не совпадают', 'error');
-            
             const tg_id = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
             if(!tg_id) return showNotification('Зайдите через Telegram!', 'error');
 
             try {
-                const res = await fetch(`${BACKEND_URL}/send_code`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ tg_id: tg_id, action: 'register' })
-                });
+                const res = await fetch(`${BACKEND_URL}/send_code`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ tg_id, action: 'register' }) });
                 const data = await res.json();
-                
                 if(data.status === 'success') {
                     tempRegData = { login, pass, tg_id };
                     document.getElementById('reg-step-1').style.display = 'none';
                     document.getElementById('reg-step-2').style.display = 'block';
-                    showNotification('Код отправлен в бот!', 'success');
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                    showNotification('Код отправлен!', 'success');
+                } else showNotification(data.message, 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
         async function finishRegistration() {
             const code = document.getElementById('reg-code').value;
             if(!code) return showNotification('Введите код', 'error');
-
             try {
-                const res = await fetch(`${BACKEND_URL}/register`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ ...tempRegData, code: code })
-                });
+                const res = await fetch(`${BACKEND_URL}/register`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ ...tempRegData, code }) });
                 const data = await res.json();
-
                 if(data.status === 'success') {
                     currentUser = { login: tempRegData.login, fc: 0, tg_id: tempRegData.tg_id };
                     localStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
-                    
-                    closeModal('register-modal');
-                    renderProfile();
-                    showNotification('Регистрация успешна!', 'success');
-                    
-                    document.getElementById('reg-step-1').style.display = 'block';
-                    document.getElementById('reg-step-2').style.display = 'none';
-                    document.getElementById('reg-login').value = '';
-                    document.getElementById('reg-pass').value = '';
-                    document.getElementById('reg-pass-repeat').value = '';
-                    document.getElementById('reg-code').value = '';
-                    // Reset bars
-                    document.getElementById('pass-strength').className = 'strength-meter';
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                    closeModal('register-modal'); renderProfile(); showNotification('Успешно!', 'success');
+                    document.getElementById('reg-step-1').style.display = 'block'; document.getElementById('reg-step-2').style.display = 'none';
+                } else showNotification(data.message, 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
         async function performLogin() {
             const login = document.getElementById('login-username').value;
             const pass = document.getElementById('login-pass').value;
-
             if(!login || !pass) return showNotification('Заполните поля', 'error');
-
             try {
-                const res = await fetch(`${BACKEND_URL}/login`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ login: login, pass: pass })
-                });
+                const res = await fetch(`${BACKEND_URL}/login`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ login, pass }) });
                 const data = await res.json();
-
                 if(data.status === '2fa_required') {
                     tempLoginData = { tg_id: data.tg_id };
                     document.getElementById('login-step-1').style.display = 'none';
                     document.getElementById('login-step-2').style.display = 'block';
-                    showNotification('Введите код из бота', 'success');
-                } else {
-                    showNotification(data.message || 'Ошибка входа', 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                    showNotification('Введите код', 'success');
+                } else showNotification(data.message || 'Ошибка', 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
         async function verifyLogin() {
             const code = document.getElementById('login-code').value;
             if(!code) return showNotification('Введите код', 'error');
             const remember = document.getElementById('remember-me').checked;
-
             try {
-                const res = await fetch(`${BACKEND_URL}/verify_login`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ tg_id: tempLoginData.tg_id, code: code })
-                });
+                const res = await fetch(`${BACKEND_URL}/verify_login`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ tg_id: tempLoginData.tg_id, code }) });
                 const data = await res.json();
-
                 if(data.status === 'success') {
                     currentUser = data.user;
                     if (remember) localStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
                     else sessionStorage.setItem('furuyume_user_data', JSON.stringify(currentUser));
-                    
-                    closeModal('login-modal');
-                    renderProfile();
-                    showNotification('Успешный вход!', 'success');
-                    
-                    // Reset login modal
-                    document.getElementById('login-step-1').style.display = 'block';
-                    document.getElementById('login-step-2').style.display = 'none';
-                    document.getElementById('login-username').value = '';
-                    document.getElementById('login-pass').value = '';
-                    document.getElementById('login-code').value = '';
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                    closeModal('login-modal'); renderProfile(); showNotification('Успешный вход!', 'success');
+                    document.getElementById('login-step-1').style.display = 'block'; document.getElementById('login-step-2').style.display = 'none';
+                } else showNotification(data.message, 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
-        // --- FORGOT PASS LOGIC ---
-        function openForgotPass() {
-            closeModal('login-modal');
-            openModal('forgot-pass-modal');
-            
-            // AUTO FILL IF LOGGED IN
-            if(currentUser && currentUser.login) {
-                document.getElementById('forgot-login').value = currentUser.login;
-            }
-        }
-
+        function openForgotPass() { closeModal('login-modal'); openModal('forgot-pass-modal'); if(currentUser) document.getElementById('forgot-login').value = currentUser.login; }
+        
         async function requestResetCode() {
             const login = document.getElementById('forgot-login').value;
             if(!login) return showNotification('Введите логин', 'error');
-
             try {
-                const res = await fetch(`${BACKEND_URL}/forgot_request`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ login: login })
-                });
+                const res = await fetch(`${BACKEND_URL}/forgot_request`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ login }) });
                 const data = await res.json();
-
                 if(data.status === 'success') {
-                    tempLoginData = { tg_id: data.tg_id }; // Reuse temp var
-                    document.getElementById('forgot-step-1').style.display = 'none';
-                    document.getElementById('forgot-step-2').style.display = 'block';
+                    tempLoginData = { tg_id: data.tg_id };
+                    document.getElementById('forgot-step-1').style.display = 'none'; document.getElementById('forgot-step-2').style.display = 'block';
                     showNotification('Код отправлен!', 'success');
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                } else showNotification(data.message, 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
         async function finishResetPass() {
-            const code = document.getElementById('reset-code').value;
-            const newPass = document.getElementById('reset-new-pass').value;
-            const newPassRep = document.getElementById('reset-new-pass-rep').value;
-
-            if(!code) return showNotification('Введите код', 'error');
-            if(newPass.length < 1) return showNotification('Введите новый пароль', 'error');
-            if(newPass !== newPassRep) return showNotification('Пароли не совпадают', 'error');
-
+            const code = document.getElementById('reset-code').value; const newPass = document.getElementById('reset-new-pass').value; const rep = document.getElementById('reset-new-pass-rep').value;
+            if(!code) return showNotification('Введите код', 'error'); if(newPass.length < 1) return showNotification('Пароль пуст', 'error'); if(newPass !== rep) return showNotification('Не совпадают', 'error');
             try {
-                const res = await fetch(`${BACKEND_URL}/reset_pass`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ tg_id: tempLoginData.tg_id, code: code, new_pass: newPass })
-                });
+                const res = await fetch(`${BACKEND_URL}/reset_pass`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ tg_id: tempLoginData.tg_id, code, new_pass: newPass }) });
                 const data = await res.json();
-
-                if(data.status === 'success') {
-                    showNotification('Пароль изменен! Войдите.', 'success');
-                    closeModal('forgot-pass-modal');
-                    openModal('login-modal');
-                    // Reset form
-                    document.getElementById('forgot-step-1').style.display = 'block';
-                    document.getElementById('forgot-step-2').style.display = 'none';
-                    document.getElementById('forgot-login').value = '';
-                    document.getElementById('reset-code').value = '';
-                    document.getElementById('reset-new-pass').value = '';
-                    document.getElementById('reset-new-pass-rep').value = '';
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                if(data.status === 'success') { showNotification('Пароль изменен!', 'success'); closeModal('forgot-pass-modal'); openModal('login-modal'); } else showNotification(data.message, 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
-        function logout() {
-            localStorage.removeItem('furuyume_user_data');
-            sessionStorage.removeItem('furuyume_user_data');
-            currentUser = null;
-            closeModal('profile-details-modal');
-            renderProfile();
-            showNotification('Вы вышли', 'success');
-        }
+        function logout() { localStorage.removeItem('furuyume_user_data'); sessionStorage.removeItem('furuyume_user_data'); currentUser = null; closeModal('profile-details-modal'); renderProfile(); showNotification('Вы вышли', 'success'); }
 
-        // --- CHANGE PASS (PROFILE) ---
         async function openChangePassword() {
             closeModal('profile-details-modal');
-            
-            // SEND CODE IMMEDIATELY
             if(!currentUser) return;
-            
             try {
-                const res = await fetch(`${BACKEND_URL}/send_code`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ tg_id: currentUser.tg_id, action: 'change_pass' })
-                });
+                const res = await fetch(`${BACKEND_URL}/send_code`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ tg_id: currentUser.tg_id, action: 'change_pass' }) });
                 const data = await res.json();
-                
-                if(data.status === 'success') {
-                    showNotification('Код отправлен в бот', 'success');
-                    openModal('change-pass-modal');
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                if(data.status === 'success') { showNotification('Код отправлен', 'success'); openModal('change-pass-modal'); } else showNotification(data.message, 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
         async function submitProfilePassChange() {
-            const code = document.getElementById('change-code').value;
-            const newPass = document.getElementById('change-new-pass').value;
-            const newPassRep = document.getElementById('change-new-pass-rep').value;
-
-            if(!code) return showNotification('Введите код', 'error');
-            if(newPass.length < 1) return showNotification('Введите новый пароль', 'error');
-            if(newPass !== newPassRep) return showNotification('Пароли не совпадают', 'error');
-
+            const code = document.getElementById('change-code').value; const newPass = document.getElementById('change-new-pass').value; const rep = document.getElementById('change-new-pass-rep').value;
+            if(!code) return showNotification('Код?', 'error'); if(newPass.length < 1) return showNotification('Пароль?', 'error'); if(newPass !== rep) return showNotification('Не совпадают', 'error');
             try {
-                const res = await fetch(`${BACKEND_URL}/change_pass_profile`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ tg_id: currentUser.tg_id, code: code, new_pass: newPass })
-                });
+                const res = await fetch(`${BACKEND_URL}/change_pass_profile`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ tg_id: currentUser.tg_id, code, new_pass: newPass }) });
                 const data = await res.json();
-
-                if(data.status === 'success') {
-                    showNotification('Пароль успешно изменен!', 'success');
-                    closeModal('change-pass-modal');
-                    // Clear inputs
-                    document.getElementById('change-code').value = '';
-                    document.getElementById('change-new-pass').value = '';
-                    document.getElementById('change-new-pass-rep').value = '';
-                } else {
-                    showNotification(data.message, 'error');
-                }
-            } catch (e) {
-                showNotification('Ошибка сети', 'error');
-            }
+                if(data.status === 'success') { showNotification('Изменено!', 'success'); closeModal('change-pass-modal'); } else showNotification(data.message, 'error');
+            } catch (e) { showNotification('Ошибка сети', 'error'); }
         }
 
-        // --- EXISTING CATALOG LOGIC ---
-        const products = [
-            { id: 1, name: "Adidas Japan track jacket", category: "olympiyka", price: 7600, oldPrice: 11800, image: "japan.png" },
-            { 
-                id: 2, name: "Adidas x Yohji Yamamoto", category: "olympiyka", price: 7200, oldPrice: 13400, image: "yamamoto.png",
-                colors: [
-                    { name: "Белая с бирюзовым", image: "yamamoto_white_turq.png" },
-                    { name: "Белая с черным", image: "yamamoto_white_black.png" }
-                ]
-            },
-            { 
-                id: 3, name: "Adidas Chinese jacket", category: "olympiyka", price: 5700, badge: "ОРИГИНАЛ", image: "china.png",
-                colors: [
-                    { name: "Белый", image: "china_white.png" },
-                    { name: "Синий", image: "china_blue.png" },
-                    { name: "Желтый", image: "china_yellow.png" },
-                    { name: "Красный", image: "china_red.png" }
-                ]
-            },
-            { id: 4, name: "VETEMENTS maroon bomber", category: "bomber", price: 13200, oldPrice: 20500, image: "vetements.png" }
-        ];
-
-        function preloadImages() {
-            const imageUrls = [];
-            products.forEach(p => {
-                if (p.image) imageUrls.push(p.image);
-                if (p.colors) p.colors.forEach(c => imageUrls.push(c.image));
-            });
-            let loadedCount = 0; const total = imageUrls.length;
-            if (total === 0) { showApp(); return; }
-            imageUrls.forEach(url => {
-                const img = new Image(); img.src = url;
-                img.onload = () => { loadedCount++; if (loadedCount === total) showApp(); };
-                img.onerror = () => { loadedCount++; if (loadedCount === total) showApp(); };
-            });
-        }
-
-        function showApp() {
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('preloader').style.display = 'none';
-                document.getElementById('app-content').style.opacity = '1';
-                checkAuth(); // CHECK AUTH ON LOAD
-            }, 500);
-        }
-
-        preloadImages();
-
+        // --- CATALOG & LOGIC UPDATE ---
         let cart = [];
         let currentCategory = 'all';
+        let currentSelectedProduct = null;
+        let selectedSize = null;
+        let selectedColor = null;
 
         function filterProducts(category, btnElement) {
             currentCategory = category;
@@ -1121,105 +920,140 @@
 
         function renderProducts() {
             const container = document.getElementById('products-container');
-            const filteredProducts = currentCategory === 'all' 
-                ? products 
-                : products.filter(p => p.category === currentCategory);
+            const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
+            
+            if (filtered.length === 0) { container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; margin-top: 40px; color: #999;">Пусто</div>`; return; }
 
-            if (filteredProducts.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; margin-top: 40px; color: #999;">В этой категории пока пусто</div>`;
-                return;
-            }
-
-            container.innerHTML = filteredProducts.map(p => {
-                const badgeHTML = p.badge ? `<div class="badge-original">${p.badge}</div>` : '';
-                const oldPriceHTML = p.oldPrice ? `<div class="old-price">${p.oldPrice} ₽</div>` : '';
-                let actionButton = '', colorBadge = '';
-
-                if (p.colors) {
-                    colorBadge = `<div class="color-select-btn" onclick="openColorSelection(${p.id})"><i class="fas fa-palette"></i> Цвет</div>`;
-                    actionButton = `<button class="add-btn" onclick="openColorSelection(${p.id})">Выбрать вариант</button>`;
-                } else {
-                    actionButton = `<button class="add-btn" onclick="addToCart(${p.id}, null, this)">В корзину</button>`;
-                }
-
+            container.innerHTML = filtered.map(p => {
+                let badge = '';
+                if(p.isSale) badge = `<div class="card-badge sale" onclick="event.stopPropagation(); showNotification('Товар на распродаже', 'info')"><i class="fas fa-fire"></i></div>`;
+                if(p.isOriginal) badge = `<div class="card-badge original" onclick="event.stopPropagation(); showNotification('Оригинальный товар', 'success')"><i class="fas fa-check"></i></div>`;
+                
                 return `
                 <div class="product-card">
-                    <div class="product-image" onclick="openProductInfo('${p.name}')">
+                    ${badge}
+                    <div class="card-quick-add" onclick="event.stopPropagation(); openDetails(${p.id})"><i class="fas fa-shopping-bag"></i></div>
+                    <div class="product-image" onclick="openDetails(${p.id})">
                         <img src="${p.image}" alt="${p.name}">
-                        ${badgeHTML}
                     </div>
                     <div class="product-title">${p.name}</div>
                     <div class="price-row">
                         <div class="price-container">
                             <div class="product-price">${p.price} ₽</div>
-                            ${oldPriceHTML}
+                            ${p.oldPrice ? `<div class="old-price">${p.oldPrice} ₽</div>` : ''}
                         </div>
-                        ${colorBadge}
                     </div>
-                    ${actionButton}
+                    <button class="add-btn" onclick="openDetails(${p.id})">Подробнее</button>
                 </div>
             `}).join('');
         }
 
-        function openColorSelection(id) {
-            const product = products.find(p => p.id === id);
-            const container = document.getElementById('color-options-container');
-            container.innerHTML = product.colors.map(c => `
-                <button class="color-option-btn" onclick="openColorGallery(${id}, '${c.name}', '${c.image}')">
-                    <span>${c.name}</span>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            `).join('');
-            document.getElementById('color-select-modal').classList.add('open');
+        function openDetails(id) {
+            const p = products.find(prod => prod.id === id);
+            currentSelectedProduct = p;
+            selectedSize = null;
+            selectedColor = null;
+            
+            // Build Color Options
+            let colorsHtml = '';
+            if(p.colors) {
+                colorsHtml = `<p style="font-weight:600; font-size:13px; margin-bottom:8px;">Цвет:</p>
+                <div class="chips-container">
+                    ${p.colors.map(c => `<div class="chip" onclick="selectColor(this, '${c.name}', '${c.image}')">${c.name}</div>`).join('')}
+                </div>`;
+            }
+
+            // Build Size Options
+            let sizesHtml = `<p style="font-weight:600; font-size:13px; margin-bottom:8px;">Размер:</p>
+            <div class="chips-container">
+                ${p.sizes.map(s => `<div class="chip" onclick="selectSize(this, '${s}')">${s}</div>`).join('')}
+            </div>`;
+
+            // Slider Images (Main + Real placeholders if simple)
+            // For the main slider, we just use the main image + colors if available
+            let sliderHtml = `<div class="details-img-slide"><img id="detail-main-img" src="${p.image}"></div>`;
+
+            const content = `
+                <div class="details-img-slider">${sliderHtml}</div>
+                <h3 style="margin-bottom: 5px;">${p.name}</h3>
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 15px;">${p.price} ₽</div>
+                
+                ${sizesHtml}
+                ${colorsHtml}
+
+                <div class="action-grid">
+                    <div class="action-btn-small" onclick="closeModal('product-details-modal'); openModal('size-chart-modal')"><i class="fas fa-ruler"></i> Размерная сетка</div>
+                    <div class="action-btn-small" onclick="openRealPhotos()"><i class="fas fa-camera"></i> Реальные фото</div>
+                </div>
+
+                <p style="margin-top: 20px; font-size: 14px; line-height: 1.5; color: #444;">${p.description}</p>
+
+                <div style="margin-top: 25px; display: grid; gap: 10px;">
+                    <button class="modal-btn" onclick="addToCartDetail()">Добавить в корзину</button>
+                    <button class="modal-btn secondary" onclick="orderNowDetail()">Заказать сейчас</button>
+                </div>
+            `;
+            
+            document.getElementById('details-content').innerHTML = content;
+            openModal('product-details-modal');
+        }
+
+        function selectSize(el, size) {
+            document.querySelectorAll('#details-content .chip').forEach(c => { 
+                if(['S','M','L','XL'].includes(c.innerText)) c.classList.remove('active'); 
+            });
+            el.classList.add('active');
+            selectedSize = size;
             if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
         }
 
-        function openColorGallery(productId, colorName, imageName) {
-            document.getElementById('color-select-modal').classList.remove('open');
-            const product = products.find(p => p.id === productId);
-            document.getElementById('gallery-title').innerText = `${product.name} (${colorName})`;
-            const wrapper = document.getElementById('gallery-wrapper');
-            wrapper.innerHTML = `<div class="gallery-slide"><img src="${imageName}" alt="${colorName}"></div>`;
-            const addBtn = document.getElementById('gallery-add-btn');
-            addBtn.onclick = function() { addToCart(productId, colorName, null); closeModal('gallery-modal'); };
-            document.getElementById('gallery-modal').classList.add('open');
+        function selectColor(el, name, img) {
+            // Remove active from other colors
+            const container = el.parentElement;
+            container.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            selectedColor = name;
+            document.getElementById('detail-main-img').src = img;
             if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
         }
 
-        function addToCart(id, colorName, btnElement) {
-            const product = products.find(p => p.id === id);
-            const cartItem = { 
-                ...product, cartId: Date.now() + Math.random(),
-                selectedColor: colorName || null,
-                displayImage: colorName ? product.colors.find(c => c.name === colorName).image : product.image 
+        function openRealPhotos() {
+            const p = currentSelectedProduct;
+            const slider = document.getElementById('real-photos-slider');
+            if(p.realPhotos && p.realPhotos.length > 0) {
+                slider.innerHTML = p.realPhotos.map(url => `<div class="details-img-slide"><img src="${url}" onerror="this.src='${p.image}'"></div>`).join('');
+                closeModal('product-details-modal');
+                openModal('real-photos-modal');
+            } else {
+                showNotification('Фото загружаются', 'info');
+            }
+        }
+
+        function addToCartDetail() {
+            if(!selectedSize) return showNotification('Выберите размер', 'error');
+            if(currentSelectedProduct.colors && !selectedColor) return showNotification('Выберите цвет', 'error');
+            
+            const item = {
+                ...currentSelectedProduct,
+                cartId: Date.now() + Math.random(),
+                selectedSize: selectedSize,
+                selectedColor: selectedColor,
+                // Display specific image if color selected
+                displayImage: selectedColor ? currentSelectedProduct.colors.find(c => c.name === selectedColor).image : currentSelectedProduct.image
             };
-            cart.push(cartItem);
-            if (btnElement) {
-                const originalText = btnElement.innerText;
-                btnElement.innerText = "Добавлено";
-                btnElement.style.background = "#333";
-                setTimeout(() => { btnElement.innerText = originalText; btnElement.style.background = ""; }, 800);
-            }
+            cart.push(item);
+            closeModal('product-details-modal');
             updateCartUI();
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            showNotification('Добавлено в корзину', 'success');
         }
 
-        window.isRemoving = false;
-        let currentDisplayedTotal = 0;
-
-        function animatePriceChange(start, end, element) {
-            const duration = 500;
-            const startTime = performance.now();
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - (1 - progress) * (1 - progress);
-                const current = Math.floor(start + (end - start) * ease);
-                element.innerText = current + ' ₽';
-                if (progress < 1) requestAnimationFrame(update);
-                else currentDisplayedTotal = end;
-            }
-            requestAnimationFrame(update);
+        function orderNowDetail() {
+            if(!selectedSize) return showNotification('Выберите размер', 'error');
+            if(currentSelectedProduct.colors && !selectedColor) return showNotification('Выберите цвет', 'error');
+            
+            const p = currentSelectedProduct;
+            const text = `Здравствуйте! Хочу заказать:\n\n${p.name}\nРазмер: ${selectedSize}\n${selectedColor ? 'Цвет: '+selectedColor : ''}\nЦена: ${p.price} ₽`;
+            window.location.href = `https://t.me/furuyumeorders?text=${encodeURIComponent(text)}`;
         }
 
         function updateCartUI() {
@@ -1227,73 +1061,51 @@
             const cartNavBadge = document.getElementById('cart-badge');
             const count = cart.length;
             [headerBadge, cartNavBadge].forEach(el => {
-                if(el) {
-                    el.innerText = count;
-                    if (count > 0) el.classList.add('visible'); else el.classList.remove('visible');
-                }
+                if(el) { el.innerText = count; if (count > 0) el.classList.add('visible'); else el.classList.remove('visible'); }
             });
 
-            const cartItemsContainer = document.getElementById('cart-items');
+            const container = document.getElementById('cart-items');
             const totalBlock = document.getElementById('cart-total-block');
-            const totalPriceEl = document.getElementById('total-price');
-            const newTotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const totalEl = document.getElementById('total-price');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
 
             if (cart.length === 0) {
                 totalBlock.classList.add('hidden');
-                if (!window.isRemoving) cartItemsContainer.innerHTML = `<div style="text-align: center; margin-top: 60px; color: #8e8e93;"><i class="fas fa-shopping-basket" style="font-size: 40px; margin-bottom: 15px; opacity: 0.3;"></i><p>Ваша корзина пуста</p></div>`;
-                currentDisplayedTotal = 0;
+                if (!window.isRemoving) container.innerHTML = `<div style="text-align: center; margin-top: 60px; color: #8e8e93;"><i class="fas fa-shopping-basket" style="font-size: 40px; margin-bottom: 15px; opacity: 0.3;"></i><p>Ваша корзина пуста</p></div>`;
             } else {
                 totalBlock.classList.remove('hidden');
-                animatePriceChange(currentDisplayedTotal, newTotal, totalPriceEl);
-                currentDisplayedTotal = newTotal;
-                const currentHTML = cart.map((item) => {
-                    const colorText = item.selectedColor ? `<div class="cart-item-color">Цвет: ${item.selectedColor}</div>` : '';
-                    const imageToUse = item.selectedColor ? item.displayImage : item.image;
-                    return `<div class="cart-item" id="cart-item-${item.cartId}"><div style="display:flex; align-items:center;"><img src="${imageToUse}" class="cart-item-img"><div class="cart-item-details"><div class="cart-item-name">${item.name}</div>${colorText}<div class="cart-item-price">${item.price} ₽</div></div></div><div onclick="removeFromCart('${item.cartId}')" style="padding: 10px; cursor: pointer;"><i class="fas fa-times" style="color: #ccc;"></i></div></div>`;
-                }).join('');
-                if (!window.isRemoving) cartItemsContainer.innerHTML = currentHTML;
+                totalEl.innerText = total + ' ₽';
+                if (!window.isRemoving) {
+                    container.innerHTML = cart.map(item => `
+                        <div class="cart-item" id="cart-item-${item.cartId}">
+                            <div style="display:flex; align-items:center;">
+                                <img src="${item.displayImage || item.image}" class="cart-item-img">
+                                <div class="cart-item-details">
+                                    <div class="cart-item-name">${item.name}</div>
+                                    <div class="cart-item-info">${item.selectedSize} ${item.selectedColor ? '| ' + item.selectedColor : ''}</div>
+                                    <div class="cart-item-price">${item.price} ₽</div>
+                                </div>
+                            </div>
+                            <div onclick="removeFromCart('${item.cartId}')" style="padding: 10px; cursor: pointer;"><i class="fas fa-times" style="color: #ccc;"></i></div>
+                        </div>
+                    `).join('');
+                }
             }
         }
 
+        window.isRemoving = false;
         function removeFromCart(cartId) {
             window.isRemoving = true;
-            const itemElement = document.getElementById(`cart-item-${cartId}`);
-            if (itemElement) {
-                itemElement.classList.add('removing');
+            const el = document.getElementById(`cart-item-${cartId}`);
+            if (el) {
+                el.classList.add('removing');
                 setTimeout(() => {
-                    const index = cart.findIndex(item => item.cartId == cartId);
-                    if (index > -1) cart.splice(index, 1);
+                    const idx = cart.findIndex(i => i.cartId == cartId);
+                    if (idx > -1) cart.splice(idx, 1);
                     window.isRemoving = false;
-                    updateCartUI(); 
+                    updateCartUI();
                 }, 400);
             }
-            if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-        }
-
-        function switchTab(tabId, element) {
-            if (!element) {
-                if (tabId === 'catalog') element = document.getElementById('nav-catalog');
-                if (tabId === 'games') element = document.getElementById('nav-games');
-            }
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if (element && element.classList.contains('nav-item')) {
-                element.classList.add('active');
-            }
-            if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-        }
-
-        function openCartPage() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('cart-page').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-        }
-
-        function openProductInfo(productName) {
-            document.getElementById('info-modal-title').innerText = productName;
-            document.getElementById('product-info-modal').classList.add('open');
             if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
         }
 
@@ -1303,8 +1115,7 @@
             const total = cart.reduce((sum, item) => sum + item.price, 0);
             let message = "Здравствуйте! Хочу оформить заказ:\n\n";
             cart.forEach((item, index) => {
-                const colorInfo = item.selectedColor ? ` (Цвет: ${item.selectedColor})` : '';
-                message += `${index + 1}. ${item.name}${colorInfo} — ${item.price} ₽\n`;
+                message += `${index + 1}. ${item.name} (Р-р: ${item.selectedSize}${item.selectedColor ? ', '+item.selectedColor : ''}) — ${item.price} ₽\n`;
             });
             message += `\n💰 Итого: ${total} ₽`;
             orderLinkBtn.href = `https://t.me/furuyumeorders?text=${encodeURIComponent(message)}`;
@@ -1312,21 +1123,33 @@
             if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         }
 
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('open');
+        function openModal(id) { document.getElementById(id).classList.add('open'); if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged(); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+        function switchTab(id, el) { 
+            if(!el) { if(id==='catalog') el=document.getElementById('nav-catalog'); if(id==='games') el=document.getElementById('nav-games'); }
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); if(el) el.classList.add('active');
             if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
         }
-
-        function closeModal(modalId) { document.getElementById(modalId).classList.remove('open'); }
+        function openCartPage() { switchTab('cart-page'); document.getElementById('cart-page').classList.add('active'); }
 
         const slider = document.getElementById('slider');
-        let slideIndex = 0; const slideCount = 3;
+        let slideIndex = 0;
         setInterval(() => {
             slideIndex++;
-            if (slideIndex >= slideCount) { slideIndex = 0; slider.scrollTo({ left: 0, behavior: 'smooth' }); }
+            if (slideIndex >= 3) { slideIndex = 0; slider.scrollTo({ left: 0, behavior: 'smooth' }); }
             else { slider.scrollTo({ left: slider.offsetWidth * slideIndex, behavior: 'smooth' }); }
-        }, 5000); 
+        }, 5000);
 
+        function preloadImages() {
+            const urls = [];
+            products.forEach(p => { urls.push(p.image); if(p.colors) p.colors.forEach(c=>urls.push(c.image)); if(p.realPhotos) urls.push(...p.realPhotos); });
+            if(urls.length===0) showApp();
+            let c=0; urls.forEach(u=>{ const i=new Image(); i.src=u; i.onload=i.onerror=()=>{c++; if(c===urls.length) showApp();}});
+        }
+        function showApp() { document.getElementById('preloader').style.display='none'; document.getElementById('app-content').style.opacity='1'; checkAuth(); }
+        
+        preloadImages();
         renderProducts();
     </script>
 </body>
