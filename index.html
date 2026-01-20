@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FURUYUME STORE</title>
+    <title>Furuyume Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
         p { margin: 0; color: var(--secondary-text); }
         a { text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
-        /* REMOVE ARROWS FROM NUMBER INPUTS */
+        /* --- REMOVE ARROWS FROM NUMBER INPUTS --- */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; 
@@ -302,9 +302,9 @@
                     </div>
                     <div class="slide">
                         <div class="slide-content has-btn">
-                            <h3>Раздача в чате</h3>
-                            <p>Ежедневно мы раздаем подарки в нашем чате Telegram.</p>
-                            <a href="https://t.me/furuyumechat" target="_blank" class="slider-btn">Перейти</a>
+                            <h3>Конкурс на 50 000₽</h3>
+                            <p>Участвуй в розыгрыше призов в нашей группе ВК!</p>
+                            <a href="https://vk.com/wall-233057761_3" target="_blank" class="slider-btn">Участвовать</a>
                         </div>
                     </div>
                     <div class="slide">
@@ -393,10 +393,10 @@
                         <span class="menu-btn-text">УСЛОВИЯ</span>
                     </a>
                 </div>
-                <a href="https://t.me/furuyumechat" target="_blank" class="menu-btn contest">
+                <a href="https://vk.com/wall-233057761_3" target="_blank" class="menu-btn contest">
                     <div class="contest-text">
-                        <span class="contest-title">ПОДАРКИ</span>
-                        <span class="contest-subtitle">каждый день за пару легких действий</span>
+                        <span class="contest-title">КОНКУРС</span>
+                        <span class="contest-subtitle">на 50 000 рублей</span>
                     </div>
                     <i class="fas fa-gift" style="font-size: 24px; opacity: 0.9;"></i>
                 </a>
@@ -499,7 +499,7 @@
                     <label class="checkbox-container" style="margin-top:0;">
                         <input type="checkbox" class="checkbox-input" id="remember-me">
                         <div class="checkbox-custom"><i class="fas fa-check" style="font-size: 10px;"></i></div>
-                        <span>Запомнить меня</span>
+                        <span>Запомнить</span>
                     </label>
                     <a href="#" onclick="openForgotPass()" style="font-size: 12px; color: #0077FF;">Забыли пароль?</a>
                 </div>
@@ -578,20 +578,25 @@
     <div class="modal-overlay" id="change-pass-modal">
         <div class="modal">
             <h3>Смена пароля</h3>
-            <div class="form-group" style="margin-top: 15px;">
-                <label class="form-label">Старый пароль</label>
-                <input type="password" class="form-input" id="old-pass">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Новый пароль</label>
-                <input type="password" class="form-input" id="new-pass" placeholder="Придумайте новый">
-            </div>
             
-            <div style="text-align: center; margin-top: 10px;">
-                <a href="#" onclick="closeModal('change-pass-modal'); openForgotPass();" style="font-size: 13px; color: #0077FF; font-weight: 500;">Восстановить пароль?</a>
+            <div id="change-pass-step-1">
+                <p style="margin-bottom: 15px;">Мы отправили код подтверждения</p>
+                <div class="form-group">
+                    <label class="form-label">Код из бота</label>
+                    <input type="number" class="form-input" id="change-code" placeholder="1234" style="text-align: center;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Новый пароль</label>
+                    <input type="password" class="form-input" id="change-new-pass" placeholder="Придумайте новый">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Повторите</label>
+                    <input type="password" class="form-input" id="change-new-pass-rep">
+                </div>
+                
+                <button class="modal-btn" onclick="submitProfilePassChange()">Сменить</button>
             </div>
 
-            <button class="modal-btn" onclick="submitPassChange()">Сохранить</button>
             <span class="close-modal" onclick="closeModal('change-pass-modal')">Отмена</span>
         </div>
     </div>
@@ -924,10 +929,6 @@
             // AUTO FILL IF LOGGED IN
             if(currentUser && currentUser.login) {
                 document.getElementById('forgot-login').value = currentUser.login;
-                // Auto skip step 1? User asked for "smooth". 
-                // Let's just fill it. He can click "Send Code".
-                // If we want SUPER smooth, we could auto-call requestResetCode() here, 
-                // but better to let user confirm.
             }
         }
 
@@ -1001,31 +1002,24 @@
             showNotification('Вы вышли', 'success');
         }
 
-        function openChangePassword() {
+        // --- CHANGE PASS (PROFILE) ---
+        async function openChangePassword() {
             closeModal('profile-details-modal');
-            openModal('change-pass-modal');
-        }
-
-        async function submitPassChange() {
-            const oldPass = document.getElementById('old-pass').value;
-            const newPass = document.getElementById('new-pass').value;
-
-            if(!oldPass) return showNotification('Введите старый пароль', 'error');
-            if(newPass.length < 1) return showNotification('Введите новый пароль', 'error');
-
+            
+            // SEND CODE IMMEDIATELY
+            if(!currentUser) return;
+            
             try {
-                const res = await fetch(`${BACKEND_URL}/change_pass`, {
+                const res = await fetch(`${BACKEND_URL}/send_code`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ login: currentUser.login, old_pass: oldPass, new_pass: newPass })
+                    body: JSON.stringify({ tg_id: currentUser.tg_id, action: 'change_pass' })
                 });
                 const data = await res.json();
-
+                
                 if(data.status === 'success') {
-                    showNotification('Пароль изменен!', 'success');
-                    closeModal('change-pass-modal');
-                    document.getElementById('old-pass').value = '';
-                    document.getElementById('new-pass').value = '';
+                    showNotification('Код отправлен в бот', 'success');
+                    openModal('change-pass-modal');
                 } else {
                     showNotification(data.message, 'error');
                 }
@@ -1034,7 +1028,39 @@
             }
         }
 
-        // --- EXISTING CATALOG LOGIC (No changes) ---
+        async function submitProfilePassChange() {
+            const code = document.getElementById('change-code').value;
+            const newPass = document.getElementById('change-new-pass').value;
+            const newPassRep = document.getElementById('change-new-pass-rep').value;
+
+            if(!code) return showNotification('Введите код', 'error');
+            if(newPass.length < 1) return showNotification('Введите новый пароль', 'error');
+            if(newPass !== newPassRep) return showNotification('Пароли не совпадают', 'error');
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/change_pass_profile`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ tg_id: currentUser.tg_id, code: code, new_pass: newPass })
+                });
+                const data = await res.json();
+
+                if(data.status === 'success') {
+                    showNotification('Пароль успешно изменен!', 'success');
+                    closeModal('change-pass-modal');
+                    // Clear inputs
+                    document.getElementById('change-code').value = '';
+                    document.getElementById('change-new-pass').value = '';
+                    document.getElementById('change-new-pass-rep').value = '';
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка сети', 'error');
+            }
+        }
+
+        // --- EXISTING CATALOG LOGIC ---
         const products = [
             { id: 1, name: "Adidas Japan track jacket", category: "olympiyka", price: 7600, oldPrice: 11800, image: "japan.png" },
             { 
