@@ -988,7 +988,7 @@
             const container = document.getElementById('products-container');
             const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
             
-            if (filtered.length === 0) { container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; margin-top: 40px; color: #999;">Пусто</div>`; return; }
+            if (filtered.length === 0) { container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; margin-top: 40px; color: #999;">Каталог пуст.</div>`; return; }
 
             container.innerHTML = filtered.map(p => {
                 let badge = '';
