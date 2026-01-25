@@ -500,16 +500,14 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="real-photos-modal">
+    <div class="modal-overlay" id="material-modal">
         <div class="modal">
-            <h3 style="margin-bottom: 20px;">Живые фото</h3>
-            <div class="details-img-slider" id="real-photos-slider">
-                </div>
-            <p style="font-size: 13px; color:#999; margin-top:10px;">Листайте вправо</p>
-            <button class="modal-btn" onclick="closeModal('real-photos-modal'); openModal('product-details-modal')">Назад к товару</button>
+            <i class="fas fa-layer-group" style="font-size: 48px; margin-bottom: 20px; color: #1a1a1a; opacity: 0.8;"></i>
+            <h3 style="margin-bottom: 15px;">О материале</h3>
+            <p id="material-content" style="font-size: 15px; line-height: 1.6; color: #444; margin-bottom: 25px; text-align: left; background: #f9f9f9; padding: 15px; border-radius: 16px;"></p>
+            <button class="modal-btn" onclick="closeModal('material-modal'); openModal('product-details-modal')">Назад к товару</button>
         </div>
     </div>
-
     <div class="modal-overlay" id="register-modal">
         <div class="modal">
             <h3>Регистрация</h3>
@@ -717,7 +715,7 @@
 
         const BACKEND_URL = "https://furuyume.online/api";
 
-        // DATA: Products with full info
+        // DATA: Products with MATERIAL info (Updated)
         const products = [
             { 
                 id: 1, 
@@ -729,7 +727,7 @@
                 isSale: true,
                 sizes: ['S', 'M', 'L', 'XL'],
                 description: "В наличии! 100% хлопок. Лучшая реплика на рынке.",
-                realPhotos: ['real_japan_1.jpg', 'real_japan_2.jpg', 'real_japan_3.jpg', 'real_japan_4.jpg', 'real_japan_5.jpg']
+                material: "Высококачественный хлопок (100%). Ткань плотная, дышащая, приятная к телу. Не скатывается после стирки, сохраняет форму. Логотипы выполнены качественной вышивкой."
             },
             { 
                 id: 2, 
@@ -741,11 +739,11 @@
                 isSale: true,
                 sizes: ['S', 'M', 'L', 'XL'],
                 description: "В наличии! 100% хлопок. Лучшая реплика на рынке.",
+                material: "Премиальный хлопок с добавлением эластана для лучшей посадки. Материал устойчив к износу. Фирменные детали Yohji Yamamoto нанесены износостойким принтом.",
                 colors: [
                     { name: "Белая с бирюзовым", image: "yamamoto_white_turq.png", id: "yama_1" },
                     { name: "Белая с черным", image: "yamamoto_white_black.png", id: "yama_2" }
-                ],
-                realPhotos: ['real_yamamoto_1.jpg', 'real_yamamoto_2.jpg', 'real_yamamoto_3.jpg', 'real_yamamoto_4.jpg', 'real_yamamoto_5.jpg']
+                ]
             },
             { 
                 id: 3, 
@@ -756,13 +754,13 @@
                 image: "china.png",
                 sizes: ['S', 'M', 'L', 'XL'],
                 description: "Под заказ! Оригинал.",
+                material: "Оригинальный полиэстер Adidas (Vintage touch). Гладкая текстура, легкий блеск. Материал обладает ветрозащитными свойствами. Идеально для демисезона.",
                 colors: [
                     { name: "Белый", image: "china_white.png", id: "chi_1" },
                     { name: "Синий", image: "china_blue.png", id: "chi_2" },
                     { name: "Желтый", image: "china_yellow.png", id: "chi_3" },
                     { name: "Красный", image: "china_red.png", id: "chi_4" }
-                ],
-                realPhotos: ['real_china_1.jpg', 'real_china_2.jpg', 'real_china_3.jpg', 'real_china_4.jpg', 'real_china_5.jpg']
+                ]
             },
             { 
                 id: 4, 
@@ -773,7 +771,7 @@
                 image: "vetements.png",
                 sizes: ['S', 'M', 'L', 'XL'],
                 description: "Под заказ! Лучшая реплика на рынке.",
-                realPhotos: ['real_vetements_1.jpg', 'real_vetements_2.jpg', 'real_vetements_3.jpg', 'real_vetements_4.jpg', 'real_vetements_5.jpg']
+                material: "Внешний слой: плотный авиационный нейлон с водоотталкивающей пропиткой. Утеплитель: синтепон высокой плотности. Подкладка: ярко-оранжевый полиэстер."
             }
         ];
 
@@ -1040,7 +1038,6 @@
             </div>`;
 
             // Slider Images (Main + Real placeholders if simple)
-            // For the main slider, we just use the main image + colors if available
             let sliderHtml = `<div class="details-img-slide"><img id="detail-main-img" src="${p.image}"></div>`;
 
             const content = `
@@ -1053,7 +1050,7 @@
 
                 <div class="action-grid">
                     <div class="action-btn-small" onclick="closeModal('product-details-modal'); openModal('size-chart-modal')"><i class="fas fa-ruler"></i> Размерная сетка</div>
-                    <div class="action-btn-small" onclick="openRealPhotos()"><i class="fas fa-camera"></i> Реальные фото</div>
+                    <div class="action-btn-small" onclick="openMaterialInfo()"><i class="fas fa-tshirt"></i> Материал</div>
                 </div>
 
                 <p style="margin-top: 20px; font-size: 14px; line-height: 1.5; color: #444;">${p.description}</p>
@@ -1087,16 +1084,19 @@
             if(tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
         }
 
-        function openRealPhotos() {
+        // NEW FUNCTION FOR MATERIAL MODAL
+        function openMaterialInfo() {
             const p = currentSelectedProduct;
-            const slider = document.getElementById('real-photos-slider');
-            if(p.realPhotos && p.realPhotos.length > 0) {
-                slider.innerHTML = p.realPhotos.map(url => `<div class="details-img-slide"><img src="${url}" onerror="this.src='${p.image}'"></div>`).join('');
-                closeModal('product-details-modal');
-                openModal('real-photos-modal');
+            const textField = document.getElementById('material-content');
+            
+            if (p.material) {
+                textField.innerText = p.material;
             } else {
-                showNotification('Фото загружаются', 'info');
+                textField.innerText = "Информация о материале уточняется у менеджера.";
             }
+            
+            closeModal('product-details-modal');
+            openModal('material-modal');
         }
 
         function addToCartDetail() {
@@ -1213,7 +1213,7 @@
 
         function preloadImages() {
             const urls = [];
-            products.forEach(p => { urls.push(p.image); if(p.colors) p.colors.forEach(c=>urls.push(c.image)); if(p.realPhotos) urls.push(...p.realPhotos); });
+            products.forEach(p => { urls.push(p.image); if(p.colors) p.colors.forEach(c=>urls.push(c.image)); });
             if(urls.length===0) showApp();
             let c=0; urls.forEach(u=>{ const i=new Image(); i.src=u; i.onload=i.onerror=()=>{c++; if(c===urls.length) showApp();}});
         }
