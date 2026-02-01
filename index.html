@@ -22,6 +22,7 @@
             --success-color: #34c759;
             --warn-color: #FFD700;
             --sale-color: #ff3b30;
+            --preorder-color: #5856D6; /* Фиолетовый для предзаказа */
             --blue-link: #0077FF;
         }
 
@@ -57,6 +58,7 @@
             position: fixed; top: 20px; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center; gap: 10px;
             z-index: 3000; pointer-events: none;
+            padding: 0 20px; /* Отступы по бокам */
         }
         .notification-toast {
             background: rgba(255, 255, 255, 0.98);
@@ -69,13 +71,17 @@
             transition: all 0.4s var(--ios-bezier);
             font-size: 13px; font-weight: 600; color: #000;
             border: 1px solid rgba(0,0,0,0.05);
+            max-width: 100%; /* Ограничение ширины */
         }
         .notification-toast.visible { transform: translateY(0); opacity: 1; }
-        .notification-toast i { font-size: 16px; }
+        .notification-toast i { font-size: 16px; flex-shrink: 0; }
+        .notification-toast span { line-height: 1.4; text-align: left; }
+        
         .notification-toast.success i { color: var(--success-color); }
         .notification-toast.error i { color: var(--error-color); }
         .notification-toast.sale-toast i { color: var(--sale-color); }
         .notification-toast.original-toast i { color: var(--success-color); }
+        .notification-toast.preorder-toast i { color: var(--preorder-color); }
 
         /* --- PASSWORD STRENGTH --- */
         .strength-meter { display: flex; gap: 5px; margin-top: 10px; height: 4px; opacity: 0; transition: opacity 0.3s; }
@@ -179,7 +185,19 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* --- QUICK ADD BUTTON (Updated) --- */
+        /* --- BADGE (PREORDER TEXT) - NEW --- */
+        .badge-text-preorder {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            background: rgba(88, 86, 214, 0.9); /* Приятный фиолетовый */
+            color: white;
+            font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 5px 10px; border-radius: 8px;
+            z-index: 10; backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* --- QUICK ADD BUTTON --- */
         .card-quick-add { 
             width: 32px; height: 32px; 
             border-radius: 50%; 
@@ -717,6 +735,32 @@
 
         // DATA: Products with MATERIAL info (Updated)
         const products = [
+            // --- NEW ITEMS (TOP) ---
+            { 
+                id: 101, 
+                name: "Adidas Sandking hoodie", 
+                category: "olympiyka", // Определяем в категорию верха, чтобы была видна в фильтрах
+                price: 7200, 
+                oldPrice: 9500, 
+                image: "sandking.png",
+                isPreorder: true, // Флаг предзаказа
+                sizes: ['S', 'M', 'L', 'XL'],
+                description: "Эксклюзивная модель. Доступна только по предзаказу.",
+                material: "Плотный хлопок высшего качества с мягким начесом. Устойчив к выцветанию."
+            },
+            { 
+                id: 102, 
+                name: "Yohji Yamamoto bomber", 
+                category: "bomber", 
+                price: 6500, 
+                oldPrice: 8000, 
+                image: "yamamoto_b.png",
+                isPreorder: true, // Флаг предзаказа
+                sizes: ['S', 'M', 'L', 'XL'],
+                description: "Лимитированная серия. Доступна только по предзаказу.",
+                material: "Премиальный нейлон, утеплитель нового поколения. Фирменная фурнитура Y-3."
+            },
+            // --- EXISTING ITEMS ---
             { 
                 id: 1, 
                 name: "Adidas Japan track jacket", 
@@ -801,12 +845,12 @@
         function showNotification(message, type = 'success') {
             const container = document.getElementById('notification-area');
             const toast = document.createElement('div');
-            toast.className = `notification-toast ${type === 'sale' ? 'sale-toast' : type === 'original' ? 'original-toast' : type}`;
-            let icon = type === 'error' ? 'fa-exclamation-circle' : type === 'sale' ? 'fa-fire' : type === 'original' ? 'fa-check' : 'fa-check-circle';
+            toast.className = `notification-toast ${type === 'sale' ? 'sale-toast' : type === 'original' ? 'original-toast' : type === 'preorder' ? 'preorder-toast' : type}`;
+            let icon = type === 'error' ? 'fa-exclamation-circle' : type === 'sale' ? 'fa-fire' : type === 'original' ? 'fa-check' : type === 'preorder' ? 'fa-clock' : 'fa-check-circle';
             toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
             container.appendChild(toast);
             requestAnimationFrame(() => { toast.classList.add('visible'); });
-            setTimeout(() => { toast.classList.remove('visible'); setTimeout(() => toast.remove(), 400); }, 3000);
+            setTimeout(() => { toast.classList.remove('visible'); setTimeout(() => toast.remove(), 400); }, 3500); // Чуть дольше для длинного текста
             if(tg.HapticFeedback) type === 'error' ? tg.HapticFeedback.notificationOccurred('error') : tg.HapticFeedback.notificationOccurred('success');
         }
 
@@ -992,14 +1036,19 @@
                 let badge = '';
                 if(p.isSale) badge = `<div class="card-badge sale" onclick="event.stopPropagation(); showNotification('Товар на распродаже', 'sale')"><i class="fas fa-fire"></i></div>`;
                 
-                // --- ORIGINAL BADGE LOGIC (TEXT BADGE) ---
+                // --- ORIGINAL BADGE LOGIC ---
                 let originalBadge = '';
                 if(p.isOriginal) originalBadge = `<div class="badge-text-original" onclick="event.stopPropagation(); showNotification('Оригинальный товар', 'original')">ОРИГИНАЛ</div>`;
+
+                // --- PREORDER BADGE LOGIC (NEW) ---
+                let preorderBadge = '';
+                if(p.isPreorder) preorderBadge = `<div class="badge-text-preorder" onclick="event.stopPropagation(); showNotification('В наличии нет, но можно оформить предзаказ', 'preorder')">ПРЕДЗАКАЗ</div>`;
 
                 return `
                 <div class="product-card">
                     ${badge}
                     ${originalBadge}
+                    ${preorderBadge}
                     <div class="product-image" onclick="openDetails(${p.id})">
                         <img src="${p.image}" alt="${p.name}">
                     </div>
