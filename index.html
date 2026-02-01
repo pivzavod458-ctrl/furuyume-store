@@ -161,7 +161,7 @@
         }
         .product-image img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* --- BADGES (SALE ICON) --- */
+        /* --- BADGES (SALE ICON) - LEGACY BUT KEPT FOR REFERENCE --- */
         .card-badge { 
             position: absolute; top: 12px; left: 12px; 
             width: 32px; height: 32px; 
@@ -185,7 +185,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* --- BADGE (PREORDER TEXT) - NEW --- */
+        /* --- BADGE (PREORDER TEXT) --- */
         .badge-text-preorder {
             position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
             background: rgba(88, 86, 214, 0.9); /* Приятный фиолетовый */
@@ -195,6 +195,19 @@
             padding: 5px 10px; border-radius: 8px;
             z-index: 10; backdrop-filter: blur(4px);
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* --- BADGE (SALE TEXT) - NEW --- */
+        .badge-text-sale {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            background: var(--sale-color); /* Красный цвет распродажи */
+            color: white;
+            font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 5px 10px; border-radius: 8px;
+            z-index: 10; backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
         }
 
         /* --- QUICK ADD BUTTON --- */
@@ -813,6 +826,7 @@
                 price: 13200, 
                 oldPrice: 20500, 
                 image: "vetements.png",
+		isPreorder: true, // Флаг предзаказа
                 sizes: ['S', 'M', 'L', 'XL'],
                 description: "Под заказ! Лучшая реплика на рынке.",
                 material: "Внешний слой: плотный авиационный нейлон с водоотталкивающей пропиткой. Утеплитель: синтепон высокой плотности. Подкладка: ярко-оранжевый полиэстер."
@@ -1034,13 +1048,14 @@
 
             container.innerHTML = filtered.map(p => {
                 let badge = '';
-                if(p.isSale) badge = `<div class="card-badge sale" onclick="event.stopPropagation(); showNotification('Товар на распродаже', 'sale')"><i class="fas fa-fire"></i></div>`;
+                // ИЗМЕНЕНИЕ ЗДЕСЬ: Заменили иконку огня на текстовую плашку РАСПРОДАЖА
+                if(p.isSale) badge = `<div class="badge-text-sale" onclick="event.stopPropagation(); showNotification('Товар на распродаже', 'sale')">РАСПРОДАЖА</div>`;
                 
                 // --- ORIGINAL BADGE LOGIC ---
                 let originalBadge = '';
                 if(p.isOriginal) originalBadge = `<div class="badge-text-original" onclick="event.stopPropagation(); showNotification('Оригинальный товар', 'original')">ОРИГИНАЛ</div>`;
 
-                // --- PREORDER BADGE LOGIC (NEW) ---
+                // --- PREORDER BADGE LOGIC ---
                 let preorderBadge = '';
                 if(p.isPreorder) preorderBadge = `<div class="badge-text-preorder" onclick="event.stopPropagation(); showNotification('В наличии нет, но можно оформить предзаказ', 'preorder')">ПРЕДЗАКАЗ</div>`;
 
