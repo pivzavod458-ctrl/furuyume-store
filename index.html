@@ -713,11 +713,11 @@
       {
         id:"p13",
         slug:"adidas-adilenium",
-        name:"ADIDAS ADILENIUM TRACK JACKET",
+        name:"(C)hrome (P)urple TRACK JACKET",
         badge:"НОВЫЙ ДРОП",
-        priceRub: 6800,
-        oldPriceRub: 10000,
-        dolyami:"Долями недоступно",
+        priceRub: 25,
+        oldPriceRub: 75,
+        dolyami:"Долями нет",
         categories:["olymp"],
         gallery: ["p13_1.webp","p13_2.webp","p13_3.webp","p13_4.webp"],
         articles: { S:"ADA-S", M:"ADA-M", L:"ADA-L", XL:"ADA-XL" },
@@ -735,7 +735,7 @@
         badge:"НОВЫЙ ДРОП",
         priceRub: 6800,
         oldPriceRub: 10000,
-        dolyami:"Долями недоступно",
+        dolyami:"Долями нет",
         categories:["olymp"],
         gallery: ["p14_1.webp","p14_2.webp","p14_3.webp","p14_4.webp"],
         articles: { S:"ADDR-S", M:"ADDR-M", L:"ADDR-L", XL:"ADDR-XL" },
@@ -753,7 +753,7 @@
         badge:"НОВЫЙ ДРОП",
         priceRub: 3200,
         oldPriceRub: 5000,
-        dolyami:"Долями недоступно",
+        dolyami:"Долями нет",
         categories:["tees"],
         gallery: ["p15_1.webp","p15_2.webp","p15_3.webp","p15_4.webp"],
         articles: { S:"ADFTS-S", M:"ADFTS-M", L:"ADFTS-L", XL:"ADFTS-XL" },
@@ -771,7 +771,7 @@
         badge:"РАСПРОДАЖА",
         priceRub: 4200,
         oldPriceRub: 7200,
-        dolyami:"Долями по 1 050 ₽",
+        dolyami:"Долями нет",
         categories:["olymp"],
         gallery: ["p1_1.webp","p1_2.webp","p1_3.webp","p1_4.webp"],
         articles: { S:"AYYWT-S", M:"AYYWT-M", L:"AYYWT-L", XL:"AYYWT-XL" },
@@ -789,7 +789,7 @@
         badge:"ПРЕДЗАКАЗ",
         priceRub: 3200,
         oldPriceRub: 4000,
-        dolyami:"Долями недоступно",
+        dolyami:"Долями нет",
         categories:["tees"],
         gallery: ["p9_1.webp","p9_2.webp","p9_3.webp","p9_4.webp"],
         articles: { S:"ANS-S", M:"ANS-M", L:"ANS-L", XL:"ANS-XL" },
@@ -807,7 +807,7 @@
         badge:"ОРИГИНАЛ",
         priceRub: 9100,
         oldPriceRub: 17400,
-        dolyami:"Долями недоступно",
+        dolyami:"Долями нет",
         categories:["tees"],
         gallery: ["p10_1.webp","p10_2.webp","p10_3.webp","p10_4.webp"],
         articles: { S:"ASG-S", M:"ASG-M", L:"ASG-L", XL:"ASG-XL" },
@@ -825,7 +825,7 @@
         badge:"ОРИГИНАЛ",
         priceRub: 5700,
         oldPriceRub: 10900,
-        dolyami:"Долями недоступно",
+        dolyami:"Долями нет",
         categories:["olymp"],
         gallery: ["p4_1.webp","p4_2.webp","p4_3.webp","p4_4.webp"],
         articles: { S:"AC-S", M:"AC-M", L:"AC-L", XL:"AC-XL" },
@@ -843,7 +843,7 @@
         badge:"ОСТАЛОСЬ 15 ШТУК",
         priceRub: 7200,
         oldPriceRub: 11000,
-        dolyami:"Долями недоступно",
+        dolyami:"Долями нет",
         categories:["hoodies"],
         gallery: ["p3_1.webp","p3_2.webp","p3_3.webp","p3_4.webp"],
         articles: { S:"ASK-S", M:"ASK-M", L:"ASK-L", XL:"ASK-XL" },
@@ -861,9 +861,9 @@
         badge:"РАСПРОДАЖА",
         priceRub: 3000,
         oldPriceRub: 5700,
-        dolyami:"Долями по 1 000 ₽",
+        dolyami:"Долями нет",
         categories:["hoodies"],
-        gallery: ["p7_1.webp","p7_2.webp","p7_3.webp","p7_4.webp"],
+        gallery: ["p7_1.webp"],
         articles: { S:"FHW-S", M:"FHW-M", L:"FHW-L", XL:"FHW-XL" },
         desc: [
           "НАШЕ ЛЕГЕНДАРНОЕ ПЛЮШЕВОЕ ХУДИ - с него началась история.",
@@ -879,9 +879,9 @@
         badge:"РАСПРОДАЖА",
         priceRub: 3000,
         oldPriceRub: 5700,
-        dolyami:"Долями по 1 000 ₽",
+        dolyami:"Долями нет",
         categories:["hoodies"],
-        gallery: ["p8_1.webp","p8_2.webp","p8_3.webp","p8_4.webp"],
+        gallery: ["p8_1.webp"],
         articles: { S:"FHB-S", M:"FHB-M", L:"FHB-L", XL:"FHB-XL" },
         desc: [
           "НАШЕ ЛЕГЕНДАРНОЕ ПЛЮШЕВОЕ ХУДИ - с него началась история.",
@@ -961,7 +961,7 @@
 
     function fmtRub(n){
       const s = String(Math.round(Number(n) || 0));
-      return s.replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " RUB";
+      return s.replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " $";
     }
     function scrollToTop() { window.scrollTo({ top: 0, behavior: "smooth" }); }
     function byId(id){ return PRODUCTS.find(p => p.id === id) || null; }
@@ -1413,5 +1413,3 @@
   </script>
 </body>
 </html>
-
-
