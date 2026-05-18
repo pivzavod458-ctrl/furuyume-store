@@ -810,15 +810,10 @@
     .news-wrap{
       width:min(520px,100%); margin:0 auto; border-radius:22px;
       overflow:hidden; border:1px solid rgba(0,0,0,.06); background:rgba(0,0,0,.02);
-      padding:18px 16px 20px;
-    }
-    .news-label{
-      font-size:10px; font-weight:800; text-transform:uppercase;
-      letter-spacing:calc(var(--ls) + 0.10em); color:var(--muted);
-      text-align:center; margin-bottom:16px;
+      padding:14px 14px 14px;
     }
     .news-track-outer{
-      position:relative; overflow:hidden; border-radius:16px;
+      position:relative; overflow:hidden; border-radius:14px;
     }
     .news-track{
       display:flex; overflow-x:auto; scroll-snap-type:x mandatory;
@@ -830,16 +825,16 @@
     .news-slide{
       flex:0 0 100%; scroll-snap-align:center;
       display:flex; flex-direction:column; align-items:center; justify-content:center;
-      text-align:center; padding:12px 6px 6px;
-      min-height:210px;
+      text-align:center; padding:8px 6px 4px;
+      min-height:148px; /* все 3 новости одинаковой высоты — flex автоматически выровняет */
       -webkit-tap-highlight-color:transparent; touch-action:manipulation;
     }
     .news-title{
-      font-size:14px; font-weight:900; text-transform:uppercase;
-      letter-spacing:var(--ls); line-height:1.1; margin-bottom:12px;
+      font-size:17px; font-weight:900; text-transform:uppercase;
+      letter-spacing:var(--ls); line-height:1.1; margin-bottom:8px;
     }
     .news-text{
-      font-size:12px; font-weight:600; line-height:1.6;
+      font-size:11px; font-weight:600; line-height:1.5;
       letter-spacing:calc(var(--ls) + 0.01em); opacity:.78;
       max-width:280px; margin:0 auto;
     }
@@ -854,11 +849,11 @@
     }
     .news-text-clickable:active{ opacity:.55; border-color:rgba(0,0,0,.55); }
     .news-action-btn{
-      margin-top:14px;
+      margin-top:10px;
       display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 22px; border-radius:14px;
+      padding:8px 20px; border-radius:12px;
       background:#111; color:#fff;
-      font-size:11px; font-weight:800; text-transform:uppercase;
+      font-size:10px; font-weight:800; text-transform:uppercase;
       letter-spacing:calc(var(--ls) + 0.04em);
       cursor:pointer; -webkit-tap-highlight-color:transparent;
       transition:opacity .18s ease, transform .18s ease;
@@ -866,7 +861,7 @@
     }
     .news-action-btn:active{ opacity:.82; transform:scale(.97); }
     .news-dots{
-      display:flex; justify-content:center; gap:6px; margin-top:14px;
+      display:flex; justify-content:center; gap:6px; margin-top:10px;
     }
     .news-dot{
       width:6px; height:6px; border-radius:50%; background:rgba(0,0,0,.18);
@@ -934,6 +929,79 @@
     .acc-back-catalog-btn:active{ opacity:.55; transform:scale(.97); }
     .acc-back-catalog-btn svg{ flex:0 0 auto; }
 
+    /* ─── FIT BUTTONS (Как сидит на: М / Ж) ─── */
+    .pfit-wrap{
+      margin-top:18px;
+      display:flex; flex-direction:column; align-items:center; gap:9px;
+    }
+    .pfit-label{
+      font-size:11px; font-weight:700; text-transform:uppercase;
+      letter-spacing:calc(var(--ls) + 0.04em); opacity:.60;
+    }
+    .pfit-buttons{
+      display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+    }
+    .pfit-btn{
+      min-width:78px; height:40px; padding:0 16px;
+      display:inline-flex; align-items:center; justify-content:center; gap:7px;
+      border-radius:14px; border:1px solid rgba(0,0,0,.10);
+      font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:var(--ls);
+      cursor:pointer; -webkit-tap-highlight-color:transparent;
+      transition:transform .18s ease, opacity .18s ease, background .18s ease, border-color .18s ease;
+      user-select:none; touch-action:manipulation;
+    }
+    .pfit-btn:active{ transform:scale(.97); opacity:.82; }
+    .pfit-btn-m{
+      background:rgba(55, 105, 175, 0.05);
+      border-color:rgba(55, 105, 175, 0.22);
+      color:#3a6aa0;
+    }
+    .pfit-btn-m:active{ background:rgba(55, 105, 175, 0.10); }
+    .pfit-btn-f{
+      background:rgba(200, 100, 145, 0.05);
+      border-color:rgba(200, 100, 145, 0.22);
+      color:#a8527a;
+    }
+    .pfit-btn-f:active{ background:rgba(200, 100, 145, 0.10); }
+    .pfit-btn-icon{ width:14px; height:14px; flex:0 0 auto; }
+
+    /* ─── FIT VIEWER MODAL ─── */
+    .fit-gallery-wrap{
+      position:relative; border-radius:18px; overflow:hidden;
+      border:1px solid rgba(0,0,0,.06); background:rgba(0,0,0,.02);
+    }
+    .fit-gallery-stage{
+      width:100%; aspect-ratio:1080/1350; max-height:60vh;
+      display:flex;
+      overflow-x:auto; scroll-snap-type:x mandatory;
+      scrollbar-width:none; -ms-overflow-style:none;
+      -webkit-overflow-scrolling:touch;
+    }
+    .fit-gallery-stage::-webkit-scrollbar{ display:none; }
+    .fit-gallery-stage img{
+      flex:0 0 100%; width:100%; height:100%; object-fit:contain;
+      scroll-snap-align:center; display:block;
+      user-select:none; pointer-events:none;
+    }
+    .fit-gallery-dots{
+      position:absolute; bottom:12px; left:0; right:0;
+      display:flex; justify-content:center; gap:6px;
+      pointer-events:none; z-index:10;
+    }
+    .fit-gallery-dots .dot{
+      width:6px; height:6px; border-radius:50%;
+      background:rgba(0,0,0,.2);
+      transition:background .25s ease, transform .25s ease;
+    }
+    .fit-gallery-dots .dot.active{ background:rgba(0,0,0,.8); transform:scale(1.2); }
+    .fit-caption{
+      margin-top:14px; padding:10px 14px;
+      border-radius:14px; background:rgba(0,0,0,.03); border:1px solid rgba(0,0,0,.05);
+      font-size:12px; font-weight:700; line-height:1.45;
+      letter-spacing:calc(var(--ls) + 0.01em); opacity:.85;
+      text-align:center;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width:430px){
       .topbar-right{ gap:1px; font-size:11px; }
@@ -952,8 +1020,9 @@
       :root{ --productbar-space:60px; }
       .cd-block{ min-width:52px; }
       .countdown-inner{ padding:28px 10px 30px; }
-      .news-title{ font-size:13px; }
-      .news-text{ font-size:11px; }
+      .news-title{ font-size:15px; }
+      .news-text{ font-size:10px; }
+      .news-slide{ min-height:140px; padding:6px 4px 2px; }
       .acc-btn{ padding:10px 18px; font-size:10px; }
       .acc-badge{ font-size:8px; padding:3px 6px; }
       .interest-btn{ font-size:10px; padding:8px 12px; }
@@ -1072,6 +1141,28 @@
     </div>
   </div>
 
+  <!-- FIT VIEWER MODAL (Как сидит на: М / Ж) -->
+  <div id="fitViewer" class="modal" aria-hidden="true">
+    <div class="sheet safe bottom-safe" role="dialog" aria-label="Как сидит">
+      <div class="dolyami-modal-head">
+        <button id="fitViewerClose" class="dolyami-back" type="button" aria-label="Закрыть">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 6L9 12l6 6" stroke="#8b8b8b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="dolyami-modal-title" id="fitViewerTitle">Как сидит</div>
+        <div class="dolyami-spacer"></div>
+      </div>
+      <div class="sheet-body" style="padding-top:14px;">
+        <div class="fit-gallery-wrap">
+          <div id="fitGalleryStage" class="fit-gallery-stage"></div>
+          <div id="fitGalleryDots" class="fit-gallery-dots" aria-hidden="true"></div>
+        </div>
+        <div id="fitGalleryCaption" class="fit-caption"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- FLOATBAR -->
   <div id="floatbar" class="floatbar safe" aria-hidden="true">
     <div class="floatbar-card">
@@ -1181,6 +1272,10 @@
               </svg>
             </button>
           </div>
+          <div id="pFitWrap" class="pfit-wrap" style="display:none;">
+            <div class="pfit-label">Как сидит на:</div>
+            <div class="pfit-buttons" id="pFitButtons"></div>
+          </div>
           <div class="pdesc" aria-label="Описание">
             <h3>Описание</h3>
             <ul id="pDescList"></ul>
@@ -1242,7 +1337,6 @@
     <!-- NEWS CAROUSEL (заменяет НОВЫЙ ДРОП) -->
     <section class="hero safe" aria-label="Новости">
       <div class="news-wrap">
-        <div class="news-label">· новости ·</div>
         <div class="news-track-outer">
           <div class="news-track" id="newsTrack"></div>
         </div>
@@ -1315,7 +1409,17 @@
         categories:["olymp"],
         gallery:["p13_1.webp","p13_2.webp","p13_3.webp","p13_4.webp"],
         articles:{ S:"ADA-S", M:"ADA-M", L:"ADA-L", XL:"ADA-XL" },
-        desc:["НОВИНКА - оформляется под заказ. 100 шт. БЕЗ РЕСТОКА!","Ткань: премиальный спортивный нейлон.","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."]
+        desc:["НОВИНКА - оформляется под заказ. 100 шт. БЕЗ РЕСТОКА!","Ткань: премиальный спортивный нейлон.","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."],
+        fit:{
+          male:{
+            images:["p13_fit_m_1.webp","p13_fit_m_2.webp","p13_fit_m_3.webp","p13_fit_m_4.webp"],
+            text:"Размер M (170-180), рост 175, вес 70"
+          },
+          female:{
+            images:["p13_fit_f_1.webp","p13_fit_f_2.webp","p13_fit_f_3.webp","p13_fit_f_4.webp"],
+            text:"Размер S (160-170), рост 165, вес 55"
+          }
+        }
       },
       {
         id:"p14", slug:"adidas-drabexist",
@@ -1329,7 +1433,7 @@
       {
         id:"p15", slug:"adidas-firebirdts",
         name:"ADIDAS FIREBIRD T-SHIRT",
-        badge:"ОСТАЛОСЬ 85 ШТУК", priceRub:3200, oldPriceRub:6700, dolyami:"Подробнее: Долями",
+        badge:"РАСПРОДАНО", priceRub:3200, oldPriceRub:6700, dolyami:"Подробнее: Долями",
         categories:["olymp"],
         gallery:["p15_1.webp","p15_2.webp","p15_3.webp","p15_4.webp"],
         articles:{ S:"ADFTS-S", M:"ADFTS-M", L:"ADFTS-L", XL:"ADFTS-XL" },
@@ -1342,7 +1446,17 @@
         categories:["olymp"],
         gallery:["p1_1.webp","p1_2.webp","p1_3.webp","p1_4.webp"],
         articles:{ S:"AYYWT-S", M:"AYYWT-M", L:"AYYWT-L", XL:"AYYWT-XL" },
-        desc:["РАСПРОДАЖА — Максимальная скидка. БЕЗ РЕСТОКА!","Ткань: 3ех нитка футер диагональ (90% хлопок и 10% п/э).","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."]
+        desc:["РАСПРОДАЖА — Максимальная скидка. БЕЗ РЕСТОКА!","Ткань: 3ех нитка футер диагональ (90% хлопок и 10% п/э).","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."],
+        fit:{
+          male:{
+            images:["p3_fit_m_1.webp","p3_fit_m_2.webp","p3_fit_m_3.webp","p3_fit_m_4.webp"],
+            text:"Размер L (175-185), рост 180, вес 75"
+          },
+          female:{
+            images:["p3_fit_f_1.webp","p3_fit_f_2.webp","p3_fit_f_3.webp","p3_fit_f_4.webp"],
+            text:"Размер M (165-175), рост 168, вес 58"
+          }
+        }
       },
       {
         id:"p9", slug:"anshirt",
@@ -1351,12 +1465,18 @@
         categories:["tees"],
         gallery:["p9_1.webp","p9_2.webp","p9_3.webp","p9_4.webp"],
         articles:{ S:"ANS-S", M:"ANS-M", L:"ANS-L", XL:"ANS-XL" },
-        desc:["ЛУЧШАЯ РЕПЛИКА на рынке, оформляется под заказ.","Оверсайз крой, лёгкая посадка — идеально для весны и лета.","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."]
+        desc:["ЛУЧШАЯ РЕПЛИКА на рынке, оформляется под заказ.","Оверсайз крой, лёгкая посадка — идеально для весны и лета.","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."],
+        fit:{
+          female:{
+            images:["p9_fit_f_1.webp","p9_fit_f_2.webp","p9_fit_f_3.webp","p9_fit_f_4.webp"],
+            text:"Размер M (160-170), рост 165, вес 56"
+          }
+        }
       },
       {
         id:"p1", slug:"adidas-sandking",
         name:"ADIDAS SANDKING ZIP-HOODIE VINTAGE",
-        badge:"ОСТАЛОСЬ 15 ШТУК", priceRub:7200, oldPriceRub:11000, dolyami:"Подробнее: Долями",
+        badge:"РАСПРОДАНО", priceRub:7200, oldPriceRub:11000, dolyami:"Подробнее: Долями",
         categories:["hoodies"],
         gallery:["p3_1.webp","p3_2.webp","p3_3.webp","p3_4.webp"],
         articles:{ S:"ASK-S", M:"ASK-M", L:"ASK-L", XL:"ASK-XL" },
@@ -1369,7 +1489,13 @@
         categories:["tees"],
         gallery:["p10_1.webp","p10_2.webp","p10_3.webp","p10_4.webp"],
         articles:{ S:"ASG-S", M:"ASG-M", L:"ASG-L", XL:"ASG-XL" },
-        desc:["ОРИГИНАЛ под заказ с Poizon (Шанхай).","Оверсайз крой, лёгкая посадка — идеально для весны и лета.","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."]
+        desc:["ОРИГИНАЛ под заказ с Poizon (Шанхай).","Оверсайз крой, лёгкая посадка — идеально для весны и лета.","Все детали выполнены качественной вышивкой.","Стирать в холодной воде, деликатный режим."],
+        fit:{
+          female:{
+            images:["p10_fit_f_1.webp","p10_fit_f_2.webp","p10_fit_f_3.webp","p10_fit_f_4.webp"],
+            text:"Размер M (160-170), рост 168, вес 58"
+          }
+        }
       },
       {
         id:"p4", slug:"adidas-chinese",
@@ -1378,7 +1504,17 @@
         categories:["olymp"],
         gallery:["p4_1.webp","p4_2.webp","p4_3.webp","p4_4.webp"],
         articles:{ S:"AC-S", M:"AC-M", L:"AC-L", XL:"AC-XL" },
-        desc:["ОРИГИНАЛ под заказ с Poizon (Шанхай).","Оверсайз крой, лёгкая посадка — идеально для весны.","Все детали выполнены качественной вышивкой.","Доступно более 10 цветов, подробнее в ЛС."]
+        desc:["ОРИГИНАЛ под заказ с Poizon (Шанхай).","Оверсайз крой, лёгкая посадка — идеально для весны.","Все детали выполнены качественной вышивкой.","Доступно более 10 цветов, подробнее в ЛС."],
+        fit:{
+          male:{
+            images:["p4_fit_m_1.webp","p4_fit_m_2.webp","p4_fit_m_3.webp","p4_fit_m_4.webp"],
+            text:"Размер L (175-185), рост 180, вес 73"
+          },
+          female:{
+            images:["p4_fit_f_1.webp","p4_fit_f_2.webp","p4_fit_f_3.webp","p4_fit_f_4.webp"],
+            text:"Размер S (160-170), рост 165, вес 54"
+          }
+        }
       },
       {
         id:"p7", slug:"furhoodiew",
@@ -1403,7 +1539,7 @@
     /* ═══════════ PRODUCT SETS ═══════════ */
     /* p13, p14, p15 теперь обычные товары (раньше были в "НОВЫЙ ДРОП") */
     const FORGOTTEN_IDS = ["p7","p8"];
-    const SOLD_OUT_IDS  = ["p14"];
+    const SOLD_OUT_IDS  = ["p14","p15","p1"];
     /* ID товаров-аксессуаров. Эти товары видны только в каталоге "АКСЕССУАРЫ".
        Чтобы добавить аксессуар: добавь товар в PRODUCTS и его id сюда.
        Поле categories у аксессуара может быть: "bags"/"caps"/"glasses"/"belts". */
@@ -1461,6 +1597,14 @@
     const interestClose = document.getElementById("interestClose");
     const interestGrid  = document.getElementById("interestGrid");
     const accBtn        = document.getElementById("accBtn");
+    const fitViewer     = document.getElementById("fitViewer");
+    const fitViewerClose= document.getElementById("fitViewerClose");
+    const fitViewerTitle= document.getElementById("fitViewerTitle");
+    const fitGalleryStage   = document.getElementById("fitGalleryStage");
+    const fitGalleryDots    = document.getElementById("fitGalleryDots");
+    const fitGalleryCaption = document.getElementById("fitGalleryCaption");
+    const pFitWrap      = document.getElementById("pFitWrap");
+    const pFitButtons   = document.getElementById("pFitButtons");
     const productView   = document.getElementById("productView");
     const pwrap         = document.getElementById("pwrap");
     const productScroll = document.getElementById("productScroll");
@@ -1511,19 +1655,40 @@
       ).join("");
     }
     function filterProducts(catId){
-      const regular = PRODUCTS.filter(p=>!FORGOTTEN_IDS.includes(p.id) && !SOLD_OUT_IDS.includes(p.id) && !ACCESSORY_IDS.includes(p.id));
-      return catId==="all" ? regular : regular.filter(p=>(p.categories||[]).includes(catId));
+      // Обычные товары (не sold-out, не из забытого прошлого, не аксессуары)
+      const regular = PRODUCTS.filter(p=>!FORGOTTEN_IDS.includes(p.id) && !ACCESSORY_IDS.includes(p.id) && !SOLD_OUT_IDS.includes(p.id));
+      // Распроданные — показываем их тоже, но в конце
+      const soldOut = PRODUCTS.filter(p=>SOLD_OUT_IDS.includes(p.id) && !FORGOTTEN_IDS.includes(p.id) && !ACCESSORY_IDS.includes(p.id));
+      const inCat = arr => catId==="all" ? arr : arr.filter(p=>(p.categories||[]).includes(catId));
+      return [...inCat(regular), ...inCat(soldOut)];
     }
     let _currentCatId = "all";
-    function renderProducts(catId){
-      _currentCatId = catId;
-      const items = filterProducts(catId);
-      if(!items.length){
-        grid.innerHTML = `<div class="grid-empty">каталог пустой</div>`;
-        renderForgottenBtn(catId);
-        return;
+
+    /* Универсальный HTML карточки товара — поддерживает sold-out стиль (блюр + оверлей + не кликается) */
+    function productCardHTML(p){
+      const isSoldOut = SOLD_OUT_IDS.includes(p.id);
+      if(isSoldOut){
+        return `
+        <article class="card sold-out-card" data-product-id="${p.id}">
+          <div class="img" aria-label="${p.name} — распродано" style="cursor:default; pointer-events:none; position:relative; overflow:hidden;">
+            <img class="product-photo" src="${p.gallery[0]}" alt="${p.name}" loading="lazy" style="filter:blur(3px); opacity:.55;">
+            <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:2;">
+              <div style="background:rgba(255,255,255,.92); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); border:1px solid rgba(0,0,0,.10); border-radius:11px; padding:6px 14px; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:-.03em; color:#111;">РАСПРОДАНО</div>
+            </div>
+          </div>
+          <div class="name" style="cursor:default; opacity:.55;">${p.name}</div>
+          <div class="desc" style="opacity:.55;">${p.badge}</div>
+          <div class="price-row" style="opacity:.55;">
+            <span>${fmtRub(p.priceRub)}</span>
+            <span class="old">${fmtRub(p.oldPriceRub)}</span>
+          </div>
+          <button class="dolyami" type="button" data-action="dolyami" aria-label="Узнать про Долями">
+            <img class="dolyami-icon" src="dolyami.webp" alt="" aria-hidden="true">
+            <span>${p.dolyami}</span>
+          </button>
+        </article>`;
       }
-      grid.innerHTML = items.map(p=>`
+      return `
         <article class="card" data-product-id="${p.id}">
           <div class="img" role="button" tabindex="0" data-open-product="${p.id}" aria-label="Открыть ${p.name}">
             <img class="product-photo" src="${p.gallery[0]}" alt="${p.name}" loading="lazy">
@@ -1538,8 +1703,18 @@
             <img class="dolyami-icon" src="dolyami.webp" alt="" aria-hidden="true">
             <span>${p.dolyami}</span>
           </button>
-        </article>`
-      ).join("");
+        </article>`;
+    }
+
+    function renderProducts(catId){
+      _currentCatId = catId;
+      const items = filterProducts(catId);
+      if(!items.length){
+        grid.innerHTML = `<div class="grid-empty">каталог пустой</div>`;
+        renderForgottenBtn(catId);
+        return;
+      }
+      grid.innerHTML = items.map(productCardHTML).join("");
       renderForgottenBtn(catId);
     }
     function renderForgottenBtn(catId){
@@ -1624,7 +1799,25 @@
         return;
       }
 
-      const excluded = [...FORGOTTEN_IDS, ...SOLD_OUT_IDS, ...ACCESSORY_IDS];
+      // Особый поиск: "аксессуары"
+      if("аксессуары".includes(q) || q.includes("аксессуар")){
+        searchResults.innerHTML = `
+          <div class="result acc-search-result" role="listitem" id="accSearchResult" aria-label="Аксессуары">
+            <div class="result-img" style="background:rgba(0,0,0,.04);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+            </div>
+            <div class="result-mid">
+              <div class="result-name">АКСЕССУАРЫ</div>
+              <div class="result-meta">Новый каталог</div>
+            </div>
+            <div class="result-price" style="font-size:10px;opacity:.6;">ПЕРЕЙТИ</div>
+          </div>`;
+        document.getElementById("accSearchResult")?.addEventListener("click", ()=>{ closeSearch(); enterAccessoriesMode(); });
+        return;
+      }
+
+      // Обычный поиск — теперь включает аксессуары (по названиям). Исключены только забытое прошлое и распроданные.
+      const excluded = [...FORGOTTEN_IDS, ...SOLD_OUT_IDS];
       const found = PRODUCTS.filter(p=>
         !excluded.includes(p.id) &&
         `${p.name} ${p.badge} ${fmtRub(p.priceRub)} ${p.id}`.toLowerCase().includes(q)
@@ -1780,10 +1973,46 @@
       const p=byId(currentProductId); if(!p) return;
       pSku.textContent=`Артикул: ${p.articles?.[currentSize]||`${p.id}-${currentSize}`}`;
     }
+
+    /* ─── Кнопки "Как сидит на:" М / Ж ─── */
+    function renderFitButtons(p){
+      if(!pFitWrap || !pFitButtons) return;
+      const hasMale   = !!(p.fit && p.fit.male);
+      const hasFemale = !!(p.fit && p.fit.female);
+      if(!hasMale && !hasFemale){
+        pFitWrap.style.display = "none";
+        pFitButtons.innerHTML  = "";
+        return;
+      }
+      // Иконки в стиле сайта: контурный SVG (Mars и Venus)
+      const maleBtn = hasMale ? `
+        <button class="pfit-btn pfit-btn-m" type="button" data-fit-gender="male" aria-label="Как сидит на мужчине">
+          <svg class="pfit-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="10" cy="14" r="5"/>
+            <path d="M14.5 9.5L20.5 3.5"/>
+            <path d="M20.5 3.5h-4.5"/>
+            <path d="M20.5 3.5v4.5"/>
+          </svg>
+          М
+        </button>` : "";
+      const femaleBtn = hasFemale ? `
+        <button class="pfit-btn pfit-btn-f" type="button" data-fit-gender="female" aria-label="Как сидит на женщине">
+          <svg class="pfit-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="9" r="5"/>
+            <path d="M12 14v8"/>
+            <path d="M9 19h6"/>
+          </svg>
+          Ж
+        </button>` : "";
+      pFitButtons.innerHTML  = maleBtn + femaleBtn;
+      pFitWrap.style.display = "";
+    }
+
     function updateProductDOM(p){
       currentProductId=p.id; currentSize="M";
       pTitle.textContent=p.name; pPrice.textContent=fmtRub(p.priceRub); pOld.textContent=fmtRub(p.oldPriceRub);
       renderGalleryScroll(p); renderSizes(p); renderDesc(p); renderRelated(p); updateSkuLine();
+      renderFitButtons(p);
     }
 
     async function openProduct(pid){
@@ -1858,6 +2087,51 @@
       document.body.classList.remove("zoom-open");
     }
     imageViewer.addEventListener("click", closeImageViewer);
+
+    /* ═══════════ FIT VIEWER (Как сидит на: М / Ж) ═══════════ */
+    function openFitViewer(productId, gender){
+      const p = byId(productId);
+      if(!p || !p.fit) return;
+      const data = p.fit[gender];
+      if(!data) return;
+
+      // Заголовок
+      fitViewerTitle.textContent = gender === "male" ? "Как сидит на мужчине" : "Как сидит на женщине";
+
+      // Галерея — 4 фото со свайпом
+      const imgs = Array.isArray(data.images) ? data.images : [];
+      fitGalleryStage.innerHTML = imgs.map(src => `<img src="${src}" alt="${p.name}" loading="lazy">`).join("");
+      fitGalleryDots.innerHTML  = imgs.map((_,i) => `<div class="dot${i===0?' active':''}" data-fit-dot="${i}"></div>`).join("");
+
+      // Текст-подпись (редактируется в данных товара)
+      fitGalleryCaption.textContent = data.text || "";
+
+      // Сброс позиции скролла
+      requestAnimationFrame(()=>{
+        fitGalleryStage.scrollLeft = 0;
+        fitGalleryDots.querySelectorAll(".dot").forEach((d,i)=>d.classList.toggle("active",i===0));
+      });
+
+      openModal(fitViewer);
+    }
+    function closeFitViewer(){ closeModal(fitViewer); }
+
+    // Синхронизация точек при свайпе галереи
+    fitGalleryStage.addEventListener("scroll", ()=>{
+      const w = fitGalleryStage.clientWidth; if(!w) return;
+      const idx = Math.round(fitGalleryStage.scrollLeft / w);
+      fitGalleryDots.querySelectorAll(".dot").forEach((d,i)=>d.classList.toggle("active",i===idx));
+    },{ passive:true });
+
+    // Клик по кнопкам М/Ж в карточке товара
+    pFitButtons?.addEventListener("click", e=>{
+      const btn = e.target.closest("[data-fit-gender]");
+      if(!btn) return;
+      const gender = btn.dataset.fitGender;
+      openFitViewer(currentProductId, gender);
+    });
+    fitViewerClose?.addEventListener("click", closeFitViewer);
+    fitViewer?.addEventListener("click", e=>{ if(e.target===fitViewer) closeFitViewer(); });
 
     /* ═══════════ NEWS SLIDER (заменяет DROP) ═══════════ */
     (function initNewsSlider(){
@@ -2019,23 +2293,7 @@
 
       // Рендерим товары
       const forgottenProducts = PRODUCTS.filter(p=>FORGOTTEN_IDS.includes(p.id));
-      grid.innerHTML = forgottenProducts.map(p=>`
-        <article class="card" data-product-id="${p.id}">
-          <div class="img" role="button" tabindex="0" data-open-product="${p.id}" aria-label="Открыть ${p.name}">
-            <img class="product-photo" src="${p.gallery[0]}" alt="${p.name}" loading="lazy">
-          </div>
-          <div class="name" role="button" tabindex="0" data-open-product="${p.id}">${p.name}</div>
-          <div class="desc">${p.badge}</div>
-          <div class="price-row">
-            <span>${fmtRub(p.priceRub)}</span>
-            <span class="old">${fmtRub(p.oldPriceRub)}</span>
-          </div>
-          <button class="dolyami" type="button" data-action="dolyami" aria-label="Узнать про Долями">
-            <img class="dolyami-icon" src="dolyami.webp" alt="" aria-hidden="true">
-            <span>${p.dolyami}</span>
-          </button>
-        </article>`
-      ).join("");
+      grid.innerHTML = forgottenProducts.map(productCardHTML).join("");
 
       // Добавляем кнопку "Выйти в главное меню" СНИЗУ — после grid
       const content = document.querySelector(".content.safe");
@@ -2111,23 +2369,7 @@
         grid.innerHTML = `<div class="grid-empty">каталог пустой</div>`;
         return;
       }
-      grid.innerHTML = items.map(p=>`
-        <article class="card" data-product-id="${p.id}">
-          <div class="img" role="button" tabindex="0" data-open-product="${p.id}" aria-label="Открыть ${p.name}">
-            <img class="product-photo" src="${p.gallery[0]}" alt="${p.name}" loading="lazy">
-          </div>
-          <div class="name" role="button" tabindex="0" data-open-product="${p.id}">${p.name}</div>
-          <div class="desc">${p.badge}</div>
-          <div class="price-row">
-            <span>${fmtRub(p.priceRub)}</span>
-            <span class="old">${fmtRub(p.oldPriceRub)}</span>
-          </div>
-          <button class="dolyami" type="button" data-action="dolyami" aria-label="Узнать про Долями">
-            <img class="dolyami-icon" src="dolyami.webp" alt="" aria-hidden="true">
-            <span>${p.dolyami}</span>
-          </button>
-        </article>`
-      ).join("");
+      grid.innerHTML = items.map(productCardHTML).join("");
     }
     function renderAccessoryCategories(activeId){
       catWrap.innerHTML = ACCESSORY_CATEGORIES.map(c =>
@@ -2420,6 +2662,7 @@
         if(cartModal.classList.contains("show"))          closeCart();
         if(dolyamiModal.classList.contains("show"))       closeDolyami();
         if(interestModal.classList.contains("show"))      closeInterestModal();
+        if(fitViewer.classList.contains("show"))          closeFitViewer();
         if(reviewsPopup.classList.contains("show"))       closeReviews();
         if(fpOverlay.classList.contains("show"))          closeFpModal();
         if(imageViewer.classList.contains("show"))        closeImageViewer();
