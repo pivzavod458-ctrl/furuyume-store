@@ -2150,7 +2150,7 @@
       const pid = _fitViewerProductId || currentProductId;
       const p = byId(pid);
       if(!p) return;
-      const text = `Здравствуйте! Хочу уточнить размерную сетку для ${toBold(p.name)}.`;
+      const text = `Здравствуйте! Хочу уточнить размерную сетку для:\n\n${toBold(p.name)}.`;
       window.open(`https://t.me/furuyume_online?text=${encodeURIComponent(text)}`, "_blank", "noopener");
     }
     fitGalleryCaption?.addEventListener("click", askSizeChartInTelegram);
